@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prison Break</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="top-bar">
+        <h1>Prison Break</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="season-selector">
+                <select id="seasonSelect" tabindex="0">
+                    <option value="1" selected>Temporada 1</option>
+                    <option value="2">Temporada 2</option>
+                    <option value="3">Temporada 3</option>
+                    <option value="4">Temporada 4</option>
+                    <option value="5">Temporada 5</option>
+                </select>
+            </div>
+            <ul id="episodeList" class="episode-list"></ul>
+        </div>
+
+        <div class="iframe-container">
+            <button id="closeButton" class="close-button" style="display: none;" onclick="closeSeriesIframe()" tabindex="0">X</button>
+            <iframe id="VideoFrame" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script src="logic.js"></script>
+    <script>
+        window.CURRENT_SERIES_ID = 'PB_DATA';
+        const seriesData = {
+            1: [
+                { name: 'Capítulo 1: "Pilot"', link: 'https://drive.google.com/file/d/1NqLIkoV1OCk7TPmR-lvqOJosaptENYc2/preview' },
+                { name: 'Capítulo 2: "Allen"', link: 'https://drive.google.com/file/d/19ebk5apUq4GuvLwJsmAHyv0_HyKdniM_/preview' },
+                { name: 'Capítulo 3: "Cell Test"', link: 'https://drive.google.com/file/d/1qutfxYAi06AHEvimWtUM79SowRhvn6BZ/preview' },
+                { name: 'Capítulo 4: "Cute Poison"', link: 'https://drive.google.com/file/d/1x638AtPFSOZd98pCZEj8aWM_yiI94BPS/preview' },
+                { name: 'Capítulo 5: "English, Fitz or Percy"', link: 'https://drive.google.com/file/d/10M_0LUSwYHorNdyLiVGeKX5ikU1Lg-Ac/preview' },
+                { name: 'Capítulo 6: "Riots, Drills and the Devil P1"', link: 'https://drive.google.com/file/d/19ibtMMtCZ_ICvg61pSJxyB1pFUcPU4VB/preview' },
+                { name: 'Capítulo 7: "Riots, Drills and the Devil P2"', link: 'https://drive.google.com/file/d/1JenZGJ3T1C9_BCy73jbn0D8GOrbT9eRA/preview' },
+                { name: 'Capítulo 8: "The Old Head"', link: 'https://drive.google.com/file/d/1m7O0PxI-54KMH-xWshxNyx_vpY7k7I_9/preview' },
+                { name: 'Capítulo 9: "Tweener"', link: 'https://drive.google.com/file/d/1B0-Dqi14QPMJkd-M2G4CnujNm2khjr5F/preview' },
+                { name: 'Capítulo 10: "Sleight of Hand"', link: 'https://drive.google.com/file/d/1pY61K0zgLCrSODCMDymO5cge0DPyKISJ/preview' },
+                { name: 'Capítulo 11: "And Then There Were 7"', link: 'https://drive.google.com/file/d/1YvyZHpug43t-FBEHOM43DQD_ntM9obpo/preview' },
+                { name: 'Capítulo 12: "Odd Man Out"', link: 'https://drive.google.com/file/d/1cr7EbPrDIzk1ZLTaG1irRHAyeE-ctjzN/preview' },
+                { name: 'Capítulo 13: "End of the Tunnel"', link: 'https://drive.google.com/file/d/1I8wu3rOMlSdvYtddNzlHcOL2iFeB6UK0/preview' },
+                { name: 'Capítulo 14: "The Rat"', link: 'https://drive.google.com/file/d/1T6qRNTIZxnFKMAvO3JeM9AHnMQ6ygg_6/preview' },
+                { name: 'Capítulo 15: "By the Skin and the Teeth"', link: 'https://drive.google.com/file/d/1zWGuss3fFf3KvIXLfpPxzoJ3N73YwGEk/preview' },
+                { name: 'Capítulo 16: "Brother\'s Keeper"', link: 'https://drive.google.com/file/d/1JvB5yq25oohtww7sjv0dQXXMEJXGjwxT/preview' },
+                { name: 'Capítulo 17: "J-Cat"', link: 'https://drive.google.com/file/d/1tIeLqKQo1fiSuRAOL2X_j7RJffPRch_5/preview' },
+                { name: 'Capítulo 18: "Bluff"', link: 'https://drive.google.com/file/d/1agbn8oFgTbDHysI4GDr9jFo8M49jE7ic/preview' },
+                { name: 'Capítulo 19: "The Key"', link: 'https://drive.google.com/file/d/1Ee7mumNOMwwawMH_k2R9ianjbDTCeNBe/preview' },
+                { name: 'Capítulo 20: "Tonight"', link: 'https://drive.google.com/file/d/1d6QVqLTFsIhF8GGqVheS8kDwQH4R-k8z/preview' },
+                { name: 'Capítulo 21: "Go"', link: 'https://drive.google.com/file/d/1gAlYbkxaIxggQ_KENAX7lp6Fl7-_hJXX/preview' },
+                { name: 'Capítulo 22: "Flight"', link: 'https://drive.google.com/file/d/1VUT0R1cAmPRiVdWe8l6VLJE_iPdS_jBX/preview' }
+            ],
+            2: [
+                { name: 'Capítulo 1: "Manhunt"', link: 'https://drive.google.com/file/d/1q5wXIo3m4lSawIV20QKrzq44BVsG_Vt_/preview' },
+                { name: 'Capítulo 2: "Otis"', link: 'https://drive.google.com/file/d/1QgDYxJCIbK2Iyrq3lJ9x4Tu99c27Rd9O/preview' },
+                { name: 'Capítulo 3: "Scan"', link: 'https://drive.google.com/file/d/1WUOH0NA23xUHjQ6U0fJ8Si4Ey9IZacXC/preview' },
+                { name: 'Capítulo 4: "First Down"', link: 'https://drive.google.com/file/d/1l6h0dBvN402nVtHxHsUjhEZw235Acal0/preview' },
+                { name: 'Capítulo 5: "Map 1213"', link: 'https://drive.google.com/file/d/1O_yFsM0zIjFX31xUPoDaMhhyK20qXd0Z/preview' },
+                { name: 'Capítulo 6: "Subdivision"', link: 'https://drive.google.com/file/d/1lrkMNXb-MJbYbsXpxrTpNc6CrF5wWWbn/preview' },
+                { name: 'Capítulo 7: "Buried"', link: 'https://drive.google.com/file/d/1dh8hhcYb1mlZ4PoPqQCImaNnjkPoodzg/preview' },
+                { name: 'Capítulo 8: "Dead Fall"', link: 'https://drive.google.com/file/d/1By4n6I8tddx07zBksPVH8nFDA-e_avVd/preview' },
+                { name: 'Capítulo 9: "Unearthed"', link: 'https://drive.google.com/file/d/1BrkIF1u5q9uESAzMODzsegcjC5agERry/preview' },
+                { name: 'Capítulo 10: "Rendezvous"', link: 'https://drive.google.com/file/d/1J3-2XJTO2idlp0vNdvXVNiUg8bS1Swfv/preview' },
+                { name: 'Capítulo 11: "Bolshoi Booze"', link: 'https://drive.google.com/file/d/1DT2uyjYADfNBDz_bbYLA6GayEBTgHVnG/preview' },
+                { name: 'Capítulo 12: "Disconnect"', link: 'https://drive.google.com/file/d/1n46OoxRR4OIS5CnjloQ8N6YMlJL04hxz/preview' },
+                { name: 'Capítulo 13: "The Killing Box"', link: 'https://drive.google.com/file/d/10BTcTzdRpgW-OhGDsqbetVspBX3x9rxs/preview' },
+                { name: 'Capítulo 14: "John Doe"', link: 'https://drive.google.com/file/d/18C3VOV-PLbUeYuCSGE9CceMDR0MyKICM/preview' },
+                { name: 'Capítulo 15: "The Message"', link: 'https://drive.google.com/file/d/1HRZgaaL0T8JyANCGLPxPdS_cr6DFVh0U/preview' },
+                { name: 'Capítulo 16: "Chicago"', link: 'https://drive.google.com/file/d/1-Yz_6-FzOo4wd_7Xtaaucc-8QaSxNgEH/preview' },
+                { name: 'Capítulo 17: "Bad Blood"', link: 'https://drive.google.com/file/d/1kR2mfNiOwEgTj9V_u-y0i7AZaeF6NF85/preview' },
+                { name: 'Capítulo 18: "Wash"', link: 'https://drive.google.com/file/d/1jDf_pkXft8lfAGl5Etgxp9KznPSJ-LHJ/preview' },
+                { name: 'Capítulo 19: "Sweet Caroline"', link: 'https://drive.google.com/file/d/1OYW2YrSv0WYZM5ObsjbwCRPwCs4KP96F/preview' },
+                { name: 'Capítulo 20: "Panama"', link: 'https://drive.google.com/file/d/1A2NHwTpkDLncMbOEG0-zncgkNtrhFRuE/preview' },
+                { name: 'Capítulo 21: "Fin Del Camino"', link: 'https://drive.google.com/file/d/1_GpSyhWgdQGVRYuZ_7pPTrNqlSiq5WqY/preview' },
+                { name: 'Capítulo 22: "Sona"', link: 'https://drive.google.com/file/d/1_GpSyhWgdQGVRYuZ_7pPTrNqlSiq5WqY/preview' }
+            ],
+            3: [
+                { name: 'Capítulo 1: "Orientación"', link: 'https://drive.google.com/file/d/1Vs0D6oJEQhxB1pB_3G9GNsCXYoMU9ztP/preview' },
+                { name: 'Capítulo 2: "Fuego/Water"', link: 'https://drive.google.com/file/d/1JreYnL_mf95j6kcELX8QruyW6O68q5fa/preview' },
+                { name: 'Capítulo 3: "Call Waiting"', link: 'https://drive.google.com/file/d/13b1M9Sp-2CkKmunNvc__6zkZZg85F8vz/preview' },
+                { name: 'Capítulo 4: "Good Fences"', link: 'https://drive.google.com/file/d/14gYhQhHmNLwPQUtB7X4i-Y8pbu0g_Pla/preview' },
+                { name: 'Capítulo 5: "Interference"', link: 'https://drive.google.com/file/d/1R293lZw9u1HTcJAoEeuHTnRSLzVQu85w/preview' },
+                { name: 'Capítulo 6: "Photo Finish"', link: 'https://drive.google.com/file/d/1Inj8wpnIDNg-iOOB1hObjzDgNDiApSu4/preview' },
+                { name: 'Capítulo 7: "Vamonos"', link: 'https://drive.google.com/file/d/1Vs0D6oJEQhxB1pB_3G9GNsCXYoMU9ztP/preview' },
+                { name: 'Capítulo 8: "Bang and Burn"', link: 'https://drive.google.com/file/d/15XEh1imoIZx-CqCabcAI9R6CJ637v_oJ/preview' },
+                { name: 'Capítulo 9: "Boxed In"', link: 'https://drive.google.com/file/d/1l1Bjx4wb96UdxRS3Qqwt1ryjLsz2B38O/preview' },
+                { name: 'Capítulo 10: "Dirt Nap"', link: 'https://drive.google.com/file/d/1ksQ3r6lR0INZRVfY5rj8r-s2dbNkahU9/preview' },
+                { name: 'Capítulo 11: "Under and Out"', link: 'https://drive.google.com/file/d/1OZN-fsr57ZT-Jic68qAWrAeZz5zfExaN/preview' },
+                { name: 'Capítulo 12: "Hell or High Water"', link: 'https://drive.google.com/file/d/19rGm3n_mZdKWk0QW-eHXmlktFZKIjgLZ/preview' },
+                { name: 'Capítulo 13: "The Art of the Deal"', link: 'https://drive.google.com/file/d/1anKXNAfel2lSV4uKxaaAODZaRtFnDpQL/preview' }
+            ],
+            4: [
+                { name: 'Capítulos 1 y 2: "Scylla" y "Breaking and Entering"', link: 'https://drive.google.com/file/d/1CzcdyQjI2LyRoyh_FE_RALGARrVrabWl/preview' },
+                { name: 'Capítulo 3: "Shut Down"', link: 'https://drive.google.com/file/d/1WDfWt0nNKPegftxCL76Fo31P8WdPn6Co/preview' },
+                { name: 'Capítulo 4: "Eagles and Angels"', link: 'https://drive.google.com/file/d/1rU3U_yz3siTqCd3vv58VDsMslCjsYaBg/preview' },
+                { name: 'Capítulo 5: "Safe and Sound"', link: 'https://drive.google.com/file/d/1CVGF5jz7Nr7GcQ3h-J4v_JnTJIZ75Om6/preview' },
+                { name: 'Capítulo 6: "Blow Out"', link: 'https://drive.google.com/file/d/1HckoHaqRqdJcO8f9YJ245hl6PECEsqtF/preview' },
+                { name: 'Capítulo 7: "Five the Hard Way"', link: 'https://drive.google.com/file/d/1CYDOj1H__luMCoPdP-4BQ_V1v1LBfO4A/preview' },
+                { name: 'Capítulo 8: "The Price"', link: 'https://drive.google.com/file/d/1Wntp81myXjsR197iifpobg-NMDZ4V-_b/preview' },
+                { name: 'Capítulo 9: "Greatness Achieved"', link: 'https://drive.google.com/file/d/1aV5GaxvUUwl5FMRU9ydkxdQVqC2AQQz3/preview' },
+                { name: 'Capítulo 10: "The Legend"', link: 'https://drive.google.com/file/d/1VXkXif1J-FCH-opcDX6Fa5z6TaXdEFEZ/preview' },
+                { name: 'Capítulo 11: "Quiet Riot"', link: 'https://drive.google.com/file/d/1-cNNmaDif9FUU434ZW85oZKZqVHH2B0X/preview' },
+                { name: 'Capítulo 12: "Selfless"', link: 'https://drive.google.com/file/d/1lKuuAhhctLIPywFJh0qr1jNEeNOHb7iL/preview' },
+                { name: 'Capítulo 13: "Deal or No Deal"', link: 'https://drive.google.com/file/d/1JkiIb7y7bjGcJUmVO2GWV9R2FzYVMr_Y/preview' },
+                { name: 'Capítulo 14: "Just Business"', link: 'https://drive.google.com/file/d/1Cj0S97V8adtQBPNewgmMPd73fC6npXb_/preview' },
+                { name: 'Capítulo 15: "Going Under"', link: 'https://drive.google.com/file/d/1Cm0Zq_QXGWW0RwKkL6EjDRG05ctf_uzq/preview' },
+                { name: 'Capítulo 16: "The Sunshine State"', link: 'https://drive.google.com/file/d/1CsMUWHhDocikNVVX5aBkGlO_B0014WFq/preview' },
+                { name: 'Capítulo 17: "The Mother Lode"', link: 'https://drive.google.com/file/d/1CtO26c4edbYL0ObNjURGgjEOg_7vOSrV/preview' },
+                { name: 'Capítulo 18: "VS."', link: 'https://drive.google.com/file/d/1Cwed4et06pPAJ2mUP6HKgaHS4y0nmeIs/preview' },
+                { name: 'Capítulo 19: "S.O.B."', link: 'https://drive.google.com/file/d/1D0FMmIQgWt6fkV_IjHucziz_-AnoM4N-/preview' },
+                { name: 'Capítulo 20: "Cowboys and Indians"', link: 'https://drive.google.com/file/d/1D33PTk1lhjHpEQZLMCZzJ78MpsXwFn51/preview' },
+                { name: 'Capítulo 21: "Rate of Exchange"', link: 'https://drive.google.com/file/d/1D3IAEY6Zz7xmrWY7kg-7z73DPrqf1FTo/preview' },
+                { name: 'Capítulos 23 y 24: "Killing Your Number" y "Free"', link: 'https://drive.google.com/file/d/1D3KuD4HDz9naUeqjAXP68yjPrvK1Gx2P/preview' }
+            ],
+            5: [
+                { name: 'Capítulo 1: "Ogygia"', link: 'https://drive.google.com/file/d/16-38otp9PxXSDLHrzTDF2IijpbRcBvxs/preview' },
+                { name: 'Capítulo 2: "Kaniel Outis"', link: 'https://drive.google.com/file/d/1IvRZlK17hbcK3R7EiYeeoONypl1mLMaM/preview' },
+                { name: 'Capítulo 3: "The Liar"', link: 'https://drive.google.com/file/d/1ph2mR3v3xlOJpfI9oXcFra_0f2lLc376/preview' },
+                { name: 'Capítulo 4: "The Prisoner\'s Dilemma"', link: 'https://drive.google.com/file/d/1h9kge3sGYIn55nHlaUL48aX6x1m_zRk-/preview' },
+                { name: 'Capítulo 5: "Contingency"', link: 'https://drive.google.com/file/d/1ltdYrT4iX6GWVFQdW9WWoB37x3bZ-xHE/preview' },
+                { name: 'Capítulo 6: "Phaecia"', link: 'https://drive.google.com/file/d/1TgduLcYP6P8L_dz-wEW1xCQ5go8mCqRs/preview' },
+                { name: 'Capítulo 7: "Wine Dark Sea"', link: 'https://drive.google.com/file/d/1JDKsfjHdR4bvLaWi5MeUwgqHfCN25tn1/preview' },
+                { name: 'Capítulo 8: "Progeny"', link: 'https://drive.google.com/file/d/1qkaoaMfhw2VWmqAcMCMtbnvIIso0sgYj/preview' },
+                { name: 'Capítulo 9: "Behind the Eyes"', link: 'https://drive.google.com/file/d/1k32QOVroQpbgPA55OmdMS8_c_JWYho0o/preview' }
+            ]
+        };
+        document.addEventListener('DOMContentLoaded', () => initSeriesPlayer(seriesData));
+    </script>
+</body>
+</html>

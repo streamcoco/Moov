@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Casa De Papel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="top-bar">
+        <h1>La Casa De Papel</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="season-selector">
+                <select id="seasonSelect" tabindex="0">
+                    <option value="1" selected>Temporada 1</option>
+                    <option value="2">Temporada 2</option>
+                    <option value="3">Temporada 3</option>
+                    <option value="4">Temporada 4</option>
+                    <option value="5">Temporada 5</option>
+                </select>
+            </div>
+            <ul id="episodeList" class="episode-list"></ul>
+        </div>
+
+        <div class="iframe-container">
+            <button id="closeButton" class="close-button" style="display: none;" onclick="closeSeriesIframe()" tabindex="0">X</button>
+            <iframe id="VideoFrame" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script src="logic.js"></script>
+    <script>
+        window.CURRENT_SERIES_ID = 'LCDP_DATA';
+        const seriesData = {
+            1: [
+                { name: 'Capítulo 1: "Efectuar lo acordado"', link: 'https://drive.google.com/file/d/1B23PUPuWpSeK7fP9JbfP2v6Esv1-cuVn/preview' },
+                { name: 'Capítulo 2: "Imprudencias letales"', link: 'https://drive.google.com/file/d/1yP5C0hBAJV_M5aqnt8LtsEMO0HHl-wVm/preview' },
+                { name: 'Capítulo 3: "Errar al disparar"', link: 'https://drive.google.com/file/d/10boI1b54Ix6_9HPu_DA2P3Aihji3GXIx/preview' },
+                { name: 'Capítulo 4: "Las chicas del río"', link: 'https://drive.google.com/file/d/1poMfcuWnsyC2_wNBLF_YCTeKu0N2j8Hm/preview' },
+                { name: 'Capítulo 5: "El día de la madre"', link: 'https://drive.google.com/file/d/1Rs3Sz7rzBh2KUEPITllSqUo6IM2TpSdP/preview' },
+                { name: 'Capítulo 6: "Tú tienes que hacerlo"', link: 'https://drive.google.com/file/d/1anxBeb0e1SaeRLgo_q09fm98SeWsGAI4/preview' },
+                { name: 'Capítulo 7: "El día de la madre"', link: 'https://drive.google.com/file/d/1s9bgqFRjlP_39SXka--ziWmhQ80_JXfb/preview' },
+                { name: 'Capítulo 8: "Un lugar en el mundo"', link: 'https://drive.google.com/file/d/1MMNz4LTJt5UR4aD2uBVKRS2OD0DJ4Pdl/preview' },
+                { name: 'Capítulo 9: "Qué difícil es ser un dios"', link: 'https://drive.google.com/file/d/1BS0oCM--c-1XTfjmZpg-RUPQjVM2hS9E/preview' }
+            ],
+            2: [
+                { name: 'Capítulo 1: "La cabeza del plan"', link: 'https://drive.google.com/file/d/1mxqeW-dQ030azQMxIONAmQvFmvAdoXpk/preview' },
+                { name: 'Capítulo 2: "La boda de Berlín"', link: 'https://drive.google.com/file/d/1ZNF__aS7jvR9u-xzUgY6wsyvhkYsD3zB/preview' },
+                { name: 'Capítulo 3: "El caso de la confesión"', link: 'https://drive.google.com/file/d/16P03y1d2cNqm9ny_etRSeAly-F1g-xBu/preview' },
+                { name: 'Capítulo 4: "Hasta que la muerte nos separe"', link: 'https://drive.google.com/file/d/1hgJuXL-NcxBVELaO9bfWQlJy0LAXxOFT/preview' },
+                { name: 'Capítulo 5: "Todo se derrumba"', link: 'https://drive.google.com/file/d/1JVp1jmviemiBJvmmEAdkIgKXczK7vkrt/preview' },
+                { name: 'Capítulo 6: "La casa de papel"', link: 'https://drive.google.com/file/d/1ShEKKZA1PrkVCEZn1wASAoZ4gp9wPUdg/preview' }
+            ],
+            3: [
+                { name: 'Capítulo 1: "Estamos de vuelta"', link: 'https://drive.google.com/file/d/19pH08WgsXyTiaGFNIzBDxY8P5zcdBvj9/preview' },
+                { name: 'Capítulo 2: "Aikido"', link: 'https://drive.google.com/file/d/1fUT3_oLL8IvTsUfIyUh4Eun9cjfxWCGp/preview' },
+                { name: 'Capítulo 3: "48 metros bajo el suelo"', link: 'https://drive.google.com/file/d/1yvKBa-Fv1MvMe72JYn1QCehm2aXKHPZS/preview' },
+                { name: 'Capítulo 4: "Boom, boom, ciao"', link: 'https://drive.google.com/file/d/15ewKKDYyTxRCxsCUUC_8IjD-Jk9vLxMB/preview' },
+                { name: 'Capítulo 5: "El día de la marmota"', link: 'https://drive.google.com/file/d/1zcbpS91NIQMdDh5koYvcdbrnGSSw84ya/preview' },
+                { name: 'Capítulo 6: "Todo pareció insignificante"', link: 'https://drive.google.com/file/d/1rGJSUMAZIVA9T47G8cMSOUvAThPvRlaS/preview' },
+                { name: 'Capítulo 7: "Pequeñas vacaciones"', link: 'https://drive.google.com/file/d/1Bufpdw0Fqs___G-eUCxT20CFwFeqSyHa/preview' },
+                { name: 'Capítulo 8: "La deriva"', link: 'https://drive.google.com/file/d/1Vm-o1RhykGdB_sf7Y0YHz3D-xq91uVqb/preview' }
+            ],
+            4: [
+                { name: 'Capítulo 1: "Game Over"', link: 'https://drive.google.com/file/d/1gq-hvTt5oKJihLkbNuWZXaFUzea-vvp6/preview' },
+                { name: 'Capítulo 2: "La boda de Berlín"', link: 'https://drive.google.com/file/d/1Be4eZBxgXqGmR3bJKm01AViKPoiqAAT1/preview' },
+                { name: 'Capítulo 3: "Lección de anatomía"', link: 'https://drive.google.com/file/d/149riqrv-Lw2wzklb1KKHoJTpQh3VGVsE/preview' },
+                { name: 'Capítulo 4: "Suspiros de España"', link: 'https://drive.google.com/file/d/1Z2HaE1El4u4p2Db92iSRL3Oxw35Id-v5/preview' },
+                { name: 'Capítulo 5: "5 minutos antes"', link: 'https://drive.google.com/file/d/1fL5oY_YlvpCig17TRLAug88cWmK9NJKl/preview' },
+                { name: 'Capítulo 6: "KO técnico"', link: 'https://drive.google.com/file/d/1rLvcLiFX43MRH-u8GwH09V0hZxFI4bVW/preview' },
+                { name: 'Capítulo 7: "Tumbar la carpa"', link: 'https://drive.google.com/file/d/1-l5rXJnZYZJNyQv_S831f416x_mfajjk/preview' },
+                { name: 'Capítulo 8: "Plan París"', link: 'https://drive.google.com/file/d/1-hgpa7Vqf36u8JQCNdC5bTpwDTKq26HM/preview' }
+            ],
+            5: [
+                { name: 'Capítulo 1: "El final del camino"', link: 'https://drive.google.com/file/d/1ow0P24yvKCajF3XxtHbpgkrYlUVKW22d/preview' },
+                { name: 'Capítulo 2: "¿Crees en la reencarnación?"', link: 'https://drive.google.com/file/d/1MKDbRrDNQwRmG9txUbrP4GsBxe2ErpNy/preview' },
+                { name: 'Capítulo 3: "El espectáculo de la vida"', link: 'https://drive.google.com/file/d/1oHXDATi3TTI5kLzwq75oiUNPwzxn0S5V/preview' },
+                { name: 'Capítulo 4: "Tu sitio en el cielo"', link: 'https://drive.google.com/file/d/15w6z1ac5f1Rx_VB_AyANQVKRJl0YGgeo/preview' },
+                { name: 'Capítulo 5: "Vivir muchas vidas"', link: 'https://drive.google.com/file/d/1nRbZQI23bwvmuTPjNJInJvSGUSGUCgS8/preview' },
+                { name: 'Capítulo 6: "Ciencia ilusionada"', link: 'https://drive.google.com/file/d/1kzmy7mBCoy_K0l00okwo0oGoVNugxJnA/preview' },
+                { name: 'Capítulo 7: "Lo que se habla en la cama"', link: 'https://drive.google.com/file/d/1fsp-fTHiHiKsWcCIPgaQ-xsGVIXBmSSn/preview' },
+                { name: 'Capítulo 8: "La teoría de la elegancia"', link: 'https://drive.google.com/file/d/10Kz0BXBMW91GQKcuBvJvjA7737dfhofs/preview' },
+                { name: 'Capítulo 9: "Lo que queda en el aire"', link: 'https://drive.google.com/file/d/1Rb92NtIDxUNGeGn6CWG9vbm---Ir4rct/preview' },
+                { name: 'Capítulo 10: "Una tradición familiar"', link: 'https://drive.google.com/file/d/1kApsUP-zWNR1_O5INY1v-qjNgQDXfYVy/preview' }
+            ]
+        };
+        document.addEventListener('DOMContentLoaded', () => initSeriesPlayer(seriesData));
+    </script>
+</body>
+</html>
