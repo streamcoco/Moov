@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grey's Anatomy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="top-bar">
+        <h1>Grey's Anatomy</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="season-selector">
+                <select id="seasonSelect" tabindex="0">
+                    <option value="1" selected>Season 1</option>
+                    <option value="2">Season 2</option>
+                </select>
+            </div>
+            <ul id="episodeList" class="episode-list"></ul>
+        </div>
+
+        <div class="iframe-container">
+            <button id="closeButton" class="close-button" style="display: none;" onclick="closeSeriesIframe()" tabindex="0">X</button>
+            <iframe id="VideoFrame" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script src="logic.js"></script>
+    <script>
+        // CONFIGURACIÓN ÚNICA
+        window.CURRENT_SERIES_ID = 'GA_DATA';
+
+        // DATOS DE EPISODIOS (Tus enlaces originales)
+        const seriesData = {
+            1: [
+                { name: 'Capítulo 1: "A Hard Day\'s Night"', link: 'https://drive.google.com/file/d/1IDCLushtHv8pL__DD5lluLWOrkRwGHZr/preview' },
+                { name: 'Capítulo 2: "The First Cut Is the Deepest"', link: 'https://drive.google.com/file/d/10Qy8DgFr2NZyneTmkCZ9OfVdsyZ7HPbL/preview' },
+                { name: 'Capítulo 3: "Winning a Battle, Losing the War"', link: 'https://drive.google.com/file/d/15uoIPv15pa8evbuIZ4qA7yeUfWly9l67/preview' },
+                { name: 'Capítulo 4: "No Man\'s Land"', link: 'https://drive.google.com/file/d/1RHDCAK_sEyN8VQzNnKpjRjfE-aZ9gAFb/preview' },
+                { name: 'Capítulo 5: "Shake Your Groove Thing"', link: 'https://drive.google.com/file/d/1lc_aNfk_UyRfDkop-1gdOPn5B8n2623Y/preview' },
+                { name: 'Capítulo 6: "If Tomorrow Never Comes"', link: 'https://drive.google.com/file/d/1X1zPNB38szdkivkH-AoaMNiDNvO8vDTo/preview' },
+                { name: 'Capítulo 7: "The Self-Destruct Button"', link: 'https://drive.google.com/file/d/1x4HQrQYduEENsG8wXwHX-EYI2RZ1xJ-5/preview' },
+                { name: 'Capítulo 8: "Save Me"', link: 'https://drive.google.com/file/d/1pDTN2Je0hOeQVaaRTdDA8rVqeu5PySbd/preview' },
+                { name: 'Capítulo 9: "Who\'s Zoomin\' Who?"', link: 'https://drive.google.com/file/d/1Ter8L2Jxk8W_YRFkXbss8jrSXtx7jc1c/preview' }
+            ],
+            2: [
+                { name: 'Capítulo 1: "Raindrops Keep Falling on My Head"', link: 'https://drive.google.com/file/d/1QLfy69Usiy10V2icHMpr-u3PLKNx1PY6/preview' },
+                { name: 'Capítulo 2: "Enough Is Enough (No More Tears)"', link: 'https://drive.google.com/file/d/1vjc-bGRjjE-1lRtt1d0b1VL62F9jXDmh/preview' },
+                { name: 'Capítulo 3: "Make Me Lose Control"', link: 'https://drive.google.com/file/d/1UWXwl0Be4BOIAde2jB1rh9rcvYzy0sKw/preview' },
+                { name: 'Capítulo 4: "Denial, Anger, Acceptance"', link: 'https://drive.google.com/file/d/1S5gyMuDHUg7UmtqUcwg0Z2WA4WagVDrT/preview' },
+                { name: 'Capítulo 5: "Bring the Pain"', link: 'https://drive.google.com/file/d/15VaUe2WL8jUucatWnBc2KoVFUYmKG82-/preview' },
+                { name: 'Capítulo 6: "Into You Like a Train"', link: 'https://drive.google.com/file/d/1pPycLyBeUjYCBiuW8FA_RSlKGnyDlqE7/preview' },
+                { name: 'Capítulo 7: "Something to Talk About"', link: 'https://drive.google.com/file/d/1D0yw_VZosli2vA9xJHmz5MHsSxuoQTls/preview' },
+                { name: 'Capítulo 8: "A Hard Day\'s Night"', link: 'https://drive.google.com/file/d/1q8Qro_oEESqlJITj5_HXVdGPo1dRhpA7/preview' },
+                { name: 'Capítulo 9: "Thanks for the Memories"', link: 'https://drive.google.com/file/d/1A_PQE4qECYq5qswEKF37Nwha_N-E2Qhm/preview' },
+                { name: 'Capítulo 10: "Much Too Much"', link: 'https://drive.google.com/file/d/1uzYCiUYKwzgu4Zvtem89pm03-kWJV4J1/preview' },
+                { name: 'Capítulo 11: "Owner of a Lonely Heart"', link: 'https://drive.google.com/file/d/18UPpwoujfKu5zRdv-lZNEMGqyrJynOkC/preview' },
+                { name: 'Capítulo 12: "As We Know It"', link: 'https://drive.google.com/file/d/1SEDbLaB3dLxMbvMZShwZLZg40BkvLa3h/preview' },
+                { name: 'Capítulo 13: "Begin the Begin"', link: 'https://drive.google.com/file/d/1pD_74XKiksIT4F0bijO6EI58UZElD_2b/preview' },
+                { name: 'Capítulo 14: "The Name of the Game"', link: 'https://drive.google.com/file/d/1Hu8TDSgSn2fxBvfmONEKVBlgjs3hQTrN/preview' },
+                { name: 'Capítulo 15: "Losing My Religion"', link: 'https://drive.google.com/file/d/1TO8pJWUEvrLYxaMyU52Uuy3gu8oNkhsl/preview' },
+                { name: 'Capítulo 16: "It\'s the End of the World"', link: 'https://drive.google.com/file/d/1xRIUq0zZBEcc1IpD4bMXPlGnPlwUy3Kf/preview' },
+                { name: 'Capítulo 17: "As We Know It"', link: 'https://drive.google.com/file/d/1yNdUPXsLaUGdjpF1CxxFrw7pUIbylHzy/preview' },
+                { name: 'Capítulo 18: "The Other Side of This Life - Part 1"', link: 'https://drive.google.com/file/d/1cObLpcBnvnVzQJWL-VjiDN3FcYvIDn7Q/preview' },
+                { name: 'Capítulo 19: "The Other Side of This Life - Part 2"', link: 'https://drive.google.com/file/d/1oE3LHesKw-0FlvH8-J6DwN-n-0OA6sGi/preview' },
+                { name: 'Capítulo 20: "Bionic Woman"', link: 'https://drive.google.com/file/d/17p9q3ow3OH9cffR_cYaDqS9AX4dmm3PO/preview' },
+                { name: 'Capítulo 21: "Superfreak"', link: 'https://drive.google.com/file/d/1azp0zwBiuDSArY4sBDfniCcIptZ2DR6A/preview' },
+                { name: 'Capítulo 22: "The Last One"', link: 'https://drive.google.com/file/d/1wOTkViuetZAqxRGnHyU1x6Dfend4fa2v/preview' },
+                { name: 'Capítulo 23: "Losing My Religion"', link: 'https://drive.google.com/file/d/1PJq_IwMAg53kjHmuUVg1AveJujr-Bj5i/preview' },
+                { name: 'Capítulo 24: "As We Know It"', link: 'https://drive.google.com/file/d/1x6skL2NAmT16nY71IiWf54-UoyYGUxZG/preview' },
+                { name: 'Capítulo 25: "The Name of the Game"', link: 'https://drive.google.com/file/d/1a4hq5ir8IotAAJfoYkk4AP6Akj-HFfmZ/preview' },
+                { name: 'Capítulo 26: "It\'s the End of the World"', link: 'https://drive.google.com/file/d/1BeQ3GTVdO2jMwcjRwyjWy4H5iBLKCJCn/preview' },
+                { name: 'Capítulo 27: "Superfreak"', link: 'https://drive.google.com/file/d/1DAjESt7ZgiOhcrJCG4FS401fzPnQ5DHt/preview' }
+            ]
+        };
+
+        // INICIAR
+        document.addEventListener('DOMContentLoaded', () => initSeriesPlayer(seriesData));
+    </script>
+</body>
+</html>
