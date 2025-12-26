@@ -6,6 +6,7 @@
 
 * {
     box-sizing: border-box;
+    /* Scrollbar fino para Firefox */
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
@@ -16,27 +17,29 @@ body {
     color: white;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Evita scroll lateral */
     width: 100vw;
     height: 100vh;
 }
 
+/* Scrollbar para Chrome/Webkit */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 
 
 /* =========================================
-   2. FOCUS & NAVEGACIÓN TV
+   2. FOCUS & NAVEGACIÓN TV (Borde Amarillo)
    ========================================= */
 :focus {
-    outline: 4px solid #FFD700;
+    outline: 4px solid #FFD700; /* Amarillo TV */
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.9);
-    transform: scale(1.1);
+    transform: scale(1.1); /* Efecto Pop */
     z-index: 1000;
     transition: transform 0.2s;
 }
 
+/* Excepción: inputs y botones simples */
 input:focus, select:focus, button:focus {
     transform: none;
     outline: 3px solid #FFD700;
@@ -44,7 +47,7 @@ input:focus, select:focus, button:focus {
 
 
 /* =========================================
-   3. PANTALLA DE LOGIN
+   3. PANTALLA DE LOGIN (Index.html)
    ========================================= */
 .login-body {
     display: flex; justify-content: center; align-items: center;
@@ -71,36 +74,27 @@ input:focus, select:focus, button:focus {
     border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;
 }
 .error-message { color: red; margin-top: 10px; min-height: 20px; }
-/* =========================================
-   BOTÓN CERRAR SESIÓN (MOVIDO A LA DERECHA)
-   ========================================= */
+
+/* BOTÓN CERRAR SESIÓN (LADO DERECHO) */
 .logout-container {
     position: absolute;
     top: 10px;
-    right: 20px; /* Antes era 'left: 10px' */
-    left: auto;  /* Asegura que no se quede pegado a la izquierda */
+    right: 20px; /* Pegado a la derecha */
+    left: auto;
     z-index: 2000;
 }
-
 .logout-container button {
-    background: #dc3545; 
-    color: white; 
-    border: none; 
-    padding: 8px 15px; 
-    border-radius: 4px; 
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5); /* Sombra para que destaque */
-    transition: transform 0.2s;
+    background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;
 }
 
-.logout-container button:hover {
-    background: #c82333; /* Rojo más oscuro al pasar el mouse */
-    transform: scale(1.05);
+#content {
+    display: none; width: 100%; height: 100%; border: none;
+    position: fixed; top: 0; left: 0; background: black;
 }
+
 
 /* =========================================
-   4. WEB PRINCIPAL
+   4. WEB PRINCIPAL (DISEÑO Y PORTADAS)
    ========================================= */
 h2.main-greeting {
     font-family: 'Waltograph', sans-serif;
@@ -156,7 +150,7 @@ h2.main-greeting {
    BOTÓN X - PEGADO, CUADRADO Y TRANSLÚCIDO
    ========================================= */
 .close, .close-button {
-    /* POSICIÓN: MÁS PEGADO (5px) */
+    /* POSICIÓN: PEGADO A LA ESQUINA */
     position: absolute;
     top: 5px;
     right: 5px;
@@ -179,12 +173,12 @@ h2.main-greeting {
     border: none; outline: none; padding: 0;
 
     /* X MÁS TRANSLÚCIDA Y CENTRADA */
-    color: rgba(255, 255, 255, 0.3); /* Transparencia alta (0.3) */
-    font-family: Arial, sans-serif; /* Arial centra mejor el símbolo × */
+    color: rgba(255, 255, 255, 0.3); /* Transparencia alta */
+    font-family: Arial, sans-serif;
     font-weight: bold;
     font-size: 70px;
     line-height: 1;
-    padding-bottom: 5px; /* Pequeño ajuste visual para elevar la X al centro exacto */
+    padding-bottom: 5px; /* Ajuste visual vertical */
     
     cursor: pointer; z-index: 9999;
     transition: all 0.2s ease;
@@ -193,7 +187,7 @@ h2.main-greeting {
 /* AL PASAR EL MOUSE (Se ilumina) */
 .close:hover, .close-button:hover, .close-button:focus {
     background-color: #e50914; 
-    color: white; /* Se vuelve blanca sólida al seleccionar */
+    color: white;
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
     border-radius: 10px; 
@@ -201,7 +195,7 @@ h2.main-greeting {
 
 
 /* =========================================
-   BOTÓN "VOLVER"
+   BOTÓN "VOLVER" (LADO IZQUIERDO)
    ========================================= */
 .back-arrow {
     position: fixed; top: 15px; left: 20px;
@@ -261,5 +255,4 @@ h2.main-greeting {
     .container { flex-direction: column; }
     .sidebar { width: 100%; height: 35vh; }
     .iframe-container { height: 65vh; }
-
 }
