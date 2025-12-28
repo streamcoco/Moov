@@ -3,43 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disney - Acceso</title>
-    <link rel="icon" type="image/ico" href="Portadas/icon.ico">
+    <title>Moov</title>
+    <link rel="icon" type="image/ico" href="Portadas/iconnn.ico">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="login-body">
 
-    <div class="logout-container" id="logoutContainer" style="display: none;">
-        <button id="logoutButton" tabindex="0">Cerrar sesión</button>
+    <div class="center-wrapper">
+
+        <div class="brand-logo-container">
+            <img src="Portadas/login.png" alt="MOOV" class="brand-logo">
+        </div>
+
+        <div class="login-container" id="loginContainer">
+            <div class="login-form-content">
+                <form id="loginForm">
+                    <input type="text" id="user" name="user" placeholder="USUARIO" required tabindex="1" autocomplete="off">
+                    
+                    <input type="password" id="pass" name="pass" placeholder="CONTRASEÑA" required tabindex="2">
+                    
+                    <button type="submit" id="loginBtn" tabindex="3">ENTRAR</button>
+                    
+                    <a href="#" 
+                       onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=M00v.5tr34m@gmail.com&su=Solicitud%20de%20Cuenta%20MOOV&body=Hola%2C%20me%20gustar%C3%ADa%20solicitar%20un%20usuario%20para%20acceder%20a%20MOOV.', 'GmailPopup', 'width=600,height=600,scrollbars=yes,resizable=yes'); return false;"
+                       id="requestBtn" 
+                       class="request-button" 
+                       tabindex="4">
+                       SOLICITAR CUENTA
+                    </a>
+
+                    <p id="error-message" class="error-message"></p>
+                </form>
+            </div>
+        </div>
+
     </div>
 
-    <div class="login-container" id="loginContainer">
-        <div class="login-form-content">
-            <h2>INICIAR SESIÓN</h2>
-            <form id="loginForm">
-                <label for="user">USUARIO</label>
-                <input type="text" id="user" name="user" required tabindex="1" autocomplete="off">
-                
-                <label for="pass">CONTRASEÑA</label>
-                <input type="password" id="pass" name="pass" required tabindex="2">
-                
-                <button type="submit" id="loginBtn" tabindex="3">Entrar</button>
-                
-                <p id="error-message" class="error-message"></p>
-            </form>
-        </div>
+    <div class="logout-container" id="logoutContainer" style="display: none;">
+        <button id="logoutButton" tabindex="0">Salir</button>
     </div>
 
     <iframe id="content"></iframe>
 
     <script>
         /* =========================================
-           LÓGICA INTERNA DE LOGIN (SOLO PARA INDEX)
+           LÓGICA INTERNA DE LOGIN + NAVEGACIÓN
            ========================================= */
 
         const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
         
-        // TUS CREDENCIALES
         const credentials = [
             { user: 'YW50b3RhcA==', pass: 'cGVvY2FjYTEyMw==' },
             { user: 'cGVsaXNmcmVl', pass: 'bGFwY293bXg=' },
@@ -47,26 +59,34 @@
             { user: 'bWFtYQ==', pass: 'a2lheWE=' }
         ];
 
-        // 1. CONTROL REMOTO EN LOGIN (Navegación Vertical)
+        // NAVEGACIÓN (Control Remoto)
         document.addEventListener('keydown', function(e) {
             const active = document.activeElement;
             const userIn = document.getElementById('user');
             const passIn = document.getElementById('pass');
-            const btn = document.getElementById('loginBtn');
+            const loginBtn = document.getElementById('loginBtn');
+            const reqBtn = document.getElementById('requestBtn');
 
-            // Flecha ABAJO
+            // Flecha ABAJO (Código 40)
             if (e.keyCode === 40) { 
-                if (active === userIn) { e.preventDefault(); passIn.focus(); }
-                else if (active === passIn) { e.preventDefault(); btn.focus(); }
+                e.preventDefault();
+                if (active === userIn) passIn.focus();
+                else if (active === passIn) loginBtn.focus();
+                else if (active === loginBtn) reqBtn.focus(); 
             }
-            // Flecha ARRIBA
+            // Flecha ARRIBA (Código 38)
             else if (e.keyCode === 38) {
-                if (active === btn) { e.preventDefault(); passIn.focus(); }
-                else if (active === passIn) { e.preventDefault(); userIn.focus(); }
+                e.preventDefault();
+                if (active === reqBtn) loginBtn.focus(); 
+                else if (active === loginBtn) passIn.focus();
+                else if (active === passIn) userIn.focus();
+            }
+            // Tecla ENTER en el botón de solicitar (para activar el popup con el mando)
+            else if (e.keyCode === 13 && active === reqBtn) {
+                reqBtn.click();
             }
         });
 
-        // 2. VERIFICAR SESIÓN GUARDADA
         function checkSession() {
             const serverLoginTime = localStorage.getItem('serverLoginTime');
             const currentUser = localStorage.getItem('currentUser');
@@ -79,12 +99,10 @@
                     logout();
                 }
             } else {
-                // Si no hay sesión, poner foco en usuario
                 setTimeout(() => document.getElementById('user').focus(), 500);
             }
         }
 
-        // 3. PROCESO DE LOGIN
         function login(e) {
             e.preventDefault();
             const userInput = document.getElementById('user').value;
@@ -106,33 +124,27 @@
             }
         }
 
-        // 4. MOSTRAR LA WEB (Ocultar Login)
         function showContent() {
-            document.getElementById('loginContainer').style.display = 'none';
+            document.querySelector('.center-wrapper').style.display = 'none';
             document.getElementById('logoutContainer').style.display = 'block';
-            
-            // Cambiar el estilo del body para modo cine
             document.body.classList.remove('login-body');
             document.body.style.backgroundColor = 'black';
 
             const contentFrame = document.getElementById('content');
-            contentFrame.src = 'web.html'; // Cargamos el dashboard aquí
+            contentFrame.src = 'web.html'; 
             contentFrame.style.display = 'block';
             
-            // Pasar el foco al iframe para que funcione el mando en la web
             contentFrame.onload = function() {
                 contentFrame.contentWindow.focus();
             };
         }
 
-        // 5. CERRAR SESIÓN
         function logout() {
             localStorage.removeItem('currentUser');
             localStorage.removeItem('serverLoginTime');
             location.reload(); 
         }
 
-        // EVENTOS
         document.addEventListener('DOMContentLoaded', checkSession);
         document.getElementById('loginForm').addEventListener('submit', login);
         document.getElementById('logoutButton').addEventListener('click', logout);
