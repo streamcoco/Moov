@@ -1,0 +1,222 @@
+/* =========================================
+   1. ESTILOS GLOBALES Y FUENTES
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/waltograph');
+
+* {
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+body {
+    background-color: #050505;
+    font-family: 'Arial', sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* =========================================
+   2. FOCUS & NAVEGACIÓN TV
+   ========================================= */
+:focus {
+    outline: 4px solid #FFD700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+    transform: scale(1.05);
+    z-index: 1000;
+    transition: all 0.2s ease;
+}
+
+/* Aplicamos focus también al botón de solicitar (enlace) */
+input:focus, button:focus, a.request-button:focus {
+    transform: scale(1.02);
+    outline: 3px solid #FFD700;
+    border-color: #FFD700 !important;
+}
+
+/* =========================================
+   3. PANTALLA DE LOGIN
+   ========================================= */
+.login-body {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    height: 100vh; 
+    width: 100vw;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+    font-family: 'Quicksand', sans-serif;
+}
+
+.center-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    width: 100%;
+}
+
+.brand-logo-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 30px; 
+}
+
+.brand-logo {
+    width: 450px; 
+    max-width: 90%;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.15));
+}
+
+.login-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    background: rgba(30, 30, 30, 0.6); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-form-content, form { 
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* INPUTS */
+.login-container input {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center; 
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.login-container input::placeholder {
+    color: #aaa;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+/* BOTÓN ENTRAR (PRINCIPAL) */
+.login-container button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 10px;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.login-container button:hover {
+    background-color: #e6e6e6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+/* NUEVO BOTÓN: SOLICITAR CUENTA (SECUNDARIO) */
+.request-button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px; /* Separación del botón entrar */
+    background-color: transparent; /* Fondo transparente */
+    color: rgba(255, 255, 255, 0.8); /* Blanco ligeramente apagado */
+    
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+    border-radius: 8px;
+    
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    text-decoration: none; /* Quitar subrayado de link */
+    
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.request-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+.error-message { 
+    color: #ff4d4d; 
+    margin-top: 20px; 
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Logout y resto (Sin cambios) */
+.logout-container { position: absolute; top: 10px; right: 20px; z-index: 2000; }
+.logout-container button { background: #e50914; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px; }
+#content { display: none; width: 100%; height: 100%; border: none; position: fixed; top: 0; left: 0; background: black; }
+
+/* Resto del CSS de la Web Principal... */
+h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-align: center; font-size: 3em; margin-top: 30px; margin-bottom: 20px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.6); font-weight: normal; }
+.search-container { text-align: center; margin-bottom: 40px; }
+#search-input { width: 60%; max-width: 600px; padding: 12px; border-radius: 30px; border: 2px solid #444; background-color: rgba(30, 30, 30, 0.8); color: white; text-align: center; font-size: 18px; outline: none; }
+.section-title-img, .disney-image, .marvel-image, .dreamworks-image, .series-image { width: 280px; height: auto; display: block; margin: 10px auto 20px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); }
+.movie-list, .marvel-movie-list, .dreamworks-movie-list, .series-list { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 20px; padding: 20px 5%; list-style: none; margin: 0 0 50px 0; align-items: center; scroll-snap-type: x mandatory; scroll-behavior: smooth; }
+.movie-list li, .marvel-movie-list li, .dreamworks-movie-list li, .series-list li { scroll-snap-align: center; }
+.movie-img { width: 160px; height: 240px; object-fit: cover; border-radius: 10px; cursor: pointer; border: 3px solid transparent; flex-shrink: 0; transition: all 0.3s ease-in-out; }
+.movie-img:hover { transform: scale(1.1); border-color: rgba(255, 255, 255, 0.9); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6); z-index: 10; }
+.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: black; overflow: hidden; }
+.modal-content { width: 100%; height: 100%; border: none; margin: 0; padding: 0; background: black; }
+.modal-content iframe { width: 100%; height: 100%; border: none; }
+.close, .close-button { position: absolute; top: 5px; right: 5px; width: 90px; height: 90px; border-radius: 10px; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.05); border: none; outline: none; padding: 0; color: rgba(255, 255, 255, 0.3); font-weight: bold; font-size: 70px; line-height: 1; padding-bottom: 5px; cursor: pointer; z-index: 9999; transition: all 0.2s ease; }
+.close:hover, .close-button:hover { background-color: #e50914; color: white; transform: scale(1.05); }
+.back-arrow { position: fixed; top: 15px; left: 20px; background-color: rgba(20, 20, 20, 0.9); color: #e50914; border: 2px solid #e50914; font-size: 14px; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px; cursor: pointer; z-index: 5000; }
+.top-bar { background: #111; padding: 15px; text-align: center; border-bottom: 1px solid #333; display: flex; justify-content: center; }
+.container { display: flex; height: calc(100vh - 60px); width: 100%; overflow: hidden; }
+.sidebar { width: 350px; background: #1a1a1a; padding: 15px; overflow-y: auto; flex-shrink: 0; }
+.iframe-container { flex-grow: 1; background: black; position: relative; height: 100%; }
+.iframe-container iframe { width: 100%; height: 100%; border: none; }
+.episode-list li { padding: 8px; border-bottom: 1px solid #333; display: flex; align-items: center; }
+.episode-list label { margin-left: 10px; cursor: pointer; color: #ddd; width: 100%; }
+.episode-list label:hover { color: white; }
+@media (min-width: 1200px) { .movie-img { width: 200px; height: 300px; } .brand-logo { width: 500px; } }
+@media (max-width: 767px) { .movie-img { width: 120px; height: 180px; } .brand-logo { width: 280px; } .container { flex-direction: column; } .sidebar { width: 100%; height: 40vh; order: 2; } .iframe-container { width: 100%; height: 60vh; order: 1; } }
