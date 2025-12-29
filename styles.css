@@ -19,7 +19,9 @@ body {
     padding: 0;
     overflow-x: hidden;
     width: 100vw;
+    /* Usamos min-height 100dvh para móviles modernos */
     min-height: 100vh;
+    min-height: 100dvh; 
 }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -50,7 +52,7 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     display: flex; 
     justify-content: center; 
     align-items: center;
-    min-height: 100vh;
+    min-height: 100dvh; /* Altura dinámica para móvil */
     width: 100vw;
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
     font-family: 'Quicksand', sans-serif;
@@ -63,7 +65,9 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     align-items: center; 
     justify-content: center; 
     width: 100%;
+    /* Asegura que no se corte en pantallas horizontales de celular */
     max-height: 95vh;
+    overflow-y: auto; 
 }
 
 .brand-logo-container {
@@ -102,7 +106,6 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     align-items: center;
 }
 
-/* INPUTS */
 .login-container input {
     width: 100%;
     padding: 12px;
@@ -111,7 +114,7 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 6px;
     color: #ffffff;
-    font-size: 15px;
+    font-size: 16px; /* 16px evita zoom automático en iPhone */
     font-weight: 500;
     text-align: center; 
     letter-spacing: 1px;
@@ -125,7 +128,6 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     letter-spacing: 2px;
 }
 
-/* BOTONES */
 .login-container button {
     width: 100%;
     padding: 12px;
@@ -169,12 +171,6 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     display: flex; justify-content: center; align-items: center;
 }
 
-.request-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: #ffffff;
-    color: #ffffff;
-}
-
 .error-message { 
     color: #ff4d4d; 
     margin-top: 15px; 
@@ -187,7 +183,6 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
-/* Logout y resto */
 .logout-container { position: absolute; top: 10px; right: 20px; z-index: 2000; }
 .logout-container button { background: #e50914; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; }
 #content { display: none; width: 100%; height: 100%; border: none; position: fixed; top: 0; left: 0; background: black; }
@@ -214,7 +209,7 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
 }
 .movie-list li, .marvel-movie-list li, .dreamworks-movie-list li, .series-list li { scroll-snap-align: center; }
 
-/* IMÁGENES BASE */
+/* IMÁGENES BASE (PC/TV) */
 .movie-img { 
     width: 160px; 
     height: 240px; 
@@ -234,15 +229,21 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
 .close:hover, .close-button:hover { background-color: #e50914; color: white; transform: scale(1.1); }
 .back-arrow { position: fixed; top: 15px; left: 20px; background-color: rgba(20, 20, 20, 0.9); color: #e50914; border: 2px solid #e50914; font-size: 14px; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px; cursor: pointer; z-index: 5000; }
 .top-bar { background: #111; padding: 10px; text-align: center; border-bottom: 1px solid #333; display: flex; justify-content: center; align-items: center; min-height: 60px; }
-.container { display: flex; height: calc(100vh - 60px); width: 100%; overflow: hidden; }
+
+/* LAYOUT SERIES BASE (PC) */
+.container { 
+    display: flex; 
+    /* Usamos dvh para evitar problemas en navegadores móviles modernos */
+    height: calc(100vh - 60px); 
+    width: 100%; 
+    overflow: hidden; 
+}
 .iframe-container { flex-grow: 1; background: black; position: relative; height: 100%; }
 .iframe-container iframe { width: 100%; height: 100%; border: none; }
 
 /* =========================================
-   ESTILOS SERIES: MODERNO Y PREMIUM (RESTAURADO)
+   ESTILOS SERIES: MODERNO Y PREMIUM
    ========================================= */
-
-/* Barra Lateral con degradado */
 .sidebar {
     width: 350px;
     background: linear-gradient(to right, #0f0f0f, #1a1a1a);
@@ -251,127 +252,99 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
     flex-shrink: 0;
     border-right: 1px solid #333;
     box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+    /* Bloquear scroll encadenado para que no mueva toda la página */
+    overscroll-behavior: contain; 
 }
 
-/* Selector de Temporada (Estilo Botón) */
-.season-selector {
-    margin-bottom: 20px;
-    position: relative;
-}
-
+.season-selector { margin-bottom: 20px; position: relative; }
 .season-selector select {
-    width: 100%;
-    padding: 12px 15px;
-    background-color: #333;
-    color: white;
-    border: 1px solid #444;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    appearance: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    /* Flecha SVG personalizada */
+    width: 100%; padding: 12px 15px; background-color: #333; color: white;
+    border: 1px solid #444; border-radius: 8px; font-size: 16px; font-weight: bold;
+    appearance: none; cursor: pointer; transition: all 0.3s ease;
     background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-    background-repeat: no-repeat;
-    background-position: right 15px top 50%;
-    background-size: 12px auto;
+    background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto;
 }
+.season-selector select:focus { border-color: #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); background-color: #000; outline: none; }
 
-.season-selector select:focus {
-    border-color: #FFD700;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-    background-color: #000;
-    outline: none;
-}
-
-/* Lista de Episodios */
-.episode-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
+.episode-list { list-style: none; padding: 0; margin: 0; }
 .episode-list li {
-    padding: 12px 10px;
-    border-bottom: 1px solid #2a2a2a;
-    display: flex;
-    align-items: center;
-    transition: background 0.2s ease;
-    border-radius: 6px;
-    margin-bottom: 4px;
+    padding: 12px 10px; border-bottom: 1px solid #2a2a2a; display: flex; align-items: center;
+    transition: background 0.2s ease; border-radius: 6px; margin-bottom: 4px;
 }
+.episode-list li:hover, .episode-list li:focus-within { background-color: rgba(255, 255, 255, 0.1); border-left: 3px solid #FFD700; }
 
-/* Efecto hover/foco premium */
-.episode-list li:hover, .episode-list li:focus-within {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-left: 3px solid #FFD700;
-}
-
+/* Checkbox Normal */
 .episode-list input[type="checkbox"] {
-    accent-color: #e50914;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    margin-right: 15px;
-    transform: scale(1.2);
+    accent-color: #e50914; width: 18px; height: 18px; cursor: pointer; margin-right: 15px; transform: scale(1.2);
 }
-
-.episode-list label {
-    cursor: pointer;
-    color: #ccc;
-    font-size: 14px;
-    width: 100%;
-    line-height: 1.4;
-    font-weight: 500;
-}
-
+.episode-list label { cursor: pointer; color: #ccc; font-size: 14px; width: 100%; line-height: 1.4; font-weight: 500; }
 .episode-list label:hover { color: white; }
 .episode-list input:checked + label { color: #666; text-decoration: line-through; }
-
-/* Scrollbar fina para la lista */
 .sidebar::-webkit-scrollbar { width: 6px; }
 .sidebar::-webkit-scrollbar-thumb { background-color: #444; border-radius: 10px; }
 
 
 /* =========================================
-   MEDIA QUERIES (ADAPTACIÓN)
+   MEDIA QUERIES (ADAPTACIÓN TABLET Y MÓVIL)
    ========================================= */
 
-/* Tablets */
 @media (max-width: 1024px) {
     .movie-img { width: 150px; height: 225px; }
     .sidebar { width: 300px; }
 }
 
-/* Móviles */
 @media (max-width: 768px) {
-    /* Login */
+    /* Login Ajustado para móvil */
     .brand-logo { width: 250px; }
     .login-container { width: 95%; padding: 20px; max-width: 320px; }
     .login-body { align-items: flex-start; padding-top: 40px; }
 
-    /* Carátulas grandes para tocar bien */
+    /* Carátulas grandes */
     .movie-img { width: 160px; height: 240px; } 
     .movie-list { gap: 15px; padding-left: 15px; }
     
-    /* Layout Vertical */
-    .container { flex-direction: column; }
+    /* Layout Series Vertical (Fix Bug Scroll) */
+    .container { 
+        flex-direction: column; 
+        /* 100dvh es clave para solucionar el bug de la barra de navegación */
+        height: calc(100dvh - 60px); 
+    }
+    
     .sidebar { 
         width: 100%; 
         height: auto; 
-        max-height: 45vh; 
+        flex-grow: 1; /* Ocupa el espacio restante */
+        max-height: none; /* Quitamos límite */
         order: 2; 
         border-right: none;
         border-top: 2px solid #e50914;
+        /* Scroll suave */
+        overflow-y: auto;
     }
+    
     .iframe-container { 
         width: 100%; 
-        height: 55vh; 
+        height: 35vh; /* Video fijo más pequeño en vertical */
+        min-height: 250px;
         order: 1; 
+        flex-shrink: 0;
     }
+    
     .top-bar h1 { font-size: 18px; }
     .back-arrow { padding: 4px 10px; font-size: 12px; }
+
+    /* MEJORA VISUAL LISTA (MODO DEDO GORDO) */
+    .episode-list li {
+        padding: 18px 10px; /* Más espacio para tocar */
+    }
+    .episode-list label {
+        font-size: 16px; /* Letra más grande */
+        font-weight: 600;
+    }
+    .episode-list input[type="checkbox"] {
+        transform: scale(1.5); /* Checkbox gigante */
+        margin-right: 20px;
+    }
 }
 
 /* Optimización TV */
