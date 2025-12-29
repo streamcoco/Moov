@@ -10,7 +10,11 @@
 </head>
 <body>
 
-    <h2 class="main-greeting">Te amo mi princesa</h2>
+    <div class="logout-container">
+        <button id="logoutBtn" onclick="handleLogout()">Salir</button>
+    </div>
+
+    <h2 class="main-greeting" id="greeting">Te amo mi princesa</h2>
 
     <div class="search-container">
         <input type="text" id="search-input" placeholder="Buscar películas..." onkeyup="filterMovies()" tabindex="0">
@@ -124,6 +128,21 @@
     <script src="logic.js"></script>
     
     <script>
+        // Función específica para el botón de Cerrar Sesión
+        function handleLogout() {
+            firebase.auth().signOut().then(() => {
+                // Redirigir a la pantalla de login (index.html)
+                if (window.top !== window.self) {
+                    window.top.location.reload(); 
+                } else {
+                    window.location.href = 'index.html'; 
+                }
+            }).catch((error) => {
+                console.error('Error al salir:', error);
+                alert("Error al cerrar sesión");
+            });
+        }
+
         // Soporte de tecla ENTER para abrir películas/series en TV
         document.querySelectorAll('.movie-img').forEach(img => {
             img.addEventListener('keydown', (e) => {
