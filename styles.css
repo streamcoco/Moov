@@ -1,0 +1,401 @@
+/* =========================================
+   1. ESTILOS GLOBALES Y FUENTES
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/waltograph');
+
+* {
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #050505;
+    font-family: 'Arial', sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* =========================================
+   2. FOCUS & NAVEGACIÓN TV
+   ========================================= */
+:focus {
+    outline: 4px solid #FFD700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+    transform: scale(1.05);
+    z-index: 1000;
+    transition: all 0.2s ease;
+}
+
+input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
+    transform: scale(1.02);
+    outline: 3px solid #FFD700;
+    border-color: #FFD700 !important;
+}
+
+/* =========================================
+   3. PANTALLA DE LOGIN
+   ========================================= */
+.login-body {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    min-height: 100vh;
+    width: 100vw;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+    font-family: 'Quicksand', sans-serif;
+    padding: 10px;
+}
+
+.center-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    width: 100%;
+    max-height: 95vh;
+}
+
+.brand-logo-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.brand-logo {
+    width: 350px;
+    max-width: 80%;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.15));
+}
+
+.login-container {
+    width: 100%;
+    max-width: 380px;
+    padding: 25px;
+    background: rgba(30, 30, 30, 0.65); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-form-content, form { 
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center; 
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.login-container input::placeholder {
+    color: #aaa;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.login-container button:hover {
+    background-color: #e6e6e6;
+    transform: translateY(-2px);
+}
+
+.request-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 12px; 
+    background-color: transparent; 
+    color: rgba(255, 255, 255, 0.7); 
+    border: 1px solid rgba(255, 255, 255, 0.2); 
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    text-decoration: none; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.error-message { 
+    color: #ff4d4d; 
+    margin-top: 15px; 
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-align: center;
+    width: 100%;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+/* =========================================
+   BOTÓN SALIR (LOGOUT) - ESTILO FANTASMA
+   ========================================= */
+.logout-container { 
+    position: absolute; 
+    top: 25px; /* Un poco más abajo para respirar */
+    left: 25px; 
+    z-index: 2000; 
+}
+
+.logout-container button { 
+    /* Estilo Idéntico al de Siguiente */
+    background-color: rgba(0, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 0.5); /* Tenue */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    padding: 8px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    backdrop-filter: blur(2px);
+    transition: all 0.3s ease;
+    opacity: 0.4;
+}
+
+.logout-container button:hover, .logout-container button:focus {
+    opacity: 1;
+    background-color: #e50914;
+    border-color: #e50914;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+    outline: none;
+}
+
+#content { display: none; width: 100%; height: 100%; border: none; position: fixed; top: 0; left: 0; background: black; }
+
+/* Resto Web Principal */
+h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-align: center; font-size: 3em; margin-top: 30px; margin-bottom: 20px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.6); font-weight: normal; }
+.search-container { text-align: center; margin-bottom: 40px; }
+#search-input { width: 60%; max-width: 600px; padding: 12px; border-radius: 30px; border: 2px solid #444; background-color: rgba(30, 30, 30, 0.8); color: white; text-align: center; font-size: 18px; outline: none; }
+.section-title-img, .disney-image, .marvel-image, .dreamworks-image, .series-image { width: 280px; height: auto; display: block; margin: 10px auto 20px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); }
+
+/* CARRUSELES */
+.movie-list, .marvel-movie-list, .dreamworks-movie-list, .series-list { 
+    display: flex; 
+    flex-wrap: nowrap; 
+    overflow-x: auto; 
+    gap: 15px; 
+    padding: 20px 5%; 
+    list-style: none; 
+    margin: 0 0 40px 0; 
+    align-items: center; 
+    scroll-snap-type: x mandatory; 
+    scroll-behavior: smooth; 
+    -webkit-overflow-scrolling: touch;
+}
+.movie-list li, .marvel-movie-list li, .dreamworks-movie-list li, .series-list li { scroll-snap-align: center; }
+
+/* IMÁGENES BASE */
+.movie-img { 
+    width: 160px; 
+    height: 240px; 
+    object-fit: cover; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    border: 3px solid transparent; 
+    flex-shrink: 0; 
+    transition: transform 0.3s ease, border-color 0.3s ease; 
+}
+.movie-img:hover { transform: scale(1.1); border-color: rgba(255, 255, 255, 0.9); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6); z-index: 10; }
+
+.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: black; overflow: hidden; }
+.modal-content { width: 100%; height: 100%; border: none; margin: 0; padding: 0; background: black; }
+.modal-content iframe { width: 100%; height: 100%; border: none; }
+.close, .close-button { position: absolute; top: 5px; right: 5px; width: 60px; height: 60px; border-radius: 8px; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.3); border: none; outline: none; padding: 0; color: rgba(255, 255, 255, 0.5); font-weight: bold; font-size: 40px; line-height: 1; cursor: pointer; z-index: 9999; }
+.close:hover, .close-button:hover { background-color: #e50914; color: white; transform: scale(1.1); }
+.back-arrow { position: fixed; top: 15px; left: 20px; background-color: rgba(20, 20, 20, 0.9); color: #e50914; border: 2px solid #e50914; font-size: 14px; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px; cursor: pointer; z-index: 5000; }
+.top-bar { background: #111; padding: 10px; text-align: center; border-bottom: 1px solid #333; display: flex; justify-content: center; align-items: center; min-height: 60px; }
+
+/* LAYOUT PC */
+.container { display: flex; height: calc(100vh - 60px); width: 100%; overflow: hidden; }
+.iframe-container { flex-grow: 1; background: black; position: relative; height: 100%; }
+.iframe-container iframe { width: 100%; height: 100%; border: none; }
+
+/* ESTILOS SERIES */
+.sidebar {
+    width: 350px;
+    background: linear-gradient(to right, #0f0f0f, #1a1a1a);
+    padding: 20px;
+    overflow-y: auto;
+    flex-shrink: 0;
+    border-right: 1px solid #333;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+    overscroll-behavior: contain; 
+}
+
+.season-selector { margin-bottom: 20px; position: relative; }
+.season-selector select {
+    width: 100%; padding: 12px 15px; background-color: #333; color: white;
+    border: 1px solid #444; border-radius: 8px; font-size: 16px; font-weight: bold;
+    appearance: none; cursor: pointer; transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto;
+}
+.season-selector select:focus { border-color: #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); background-color: #000; outline: none; }
+
+.episode-list { list-style: none; padding: 0; margin: 0; }
+.episode-list li {
+    padding: 12px 10px; border-bottom: 1px solid #2a2a2a; display: flex; align-items: center;
+    transition: background 0.2s ease; border-radius: 6px; margin-bottom: 4px;
+}
+.episode-list li:hover, .episode-list li:focus-within { background-color: rgba(255, 255, 255, 0.1); border-left: 3px solid #FFD700; }
+
+.episode-list input[type="checkbox"] {
+    accent-color: #e50914; width: 18px; height: 18px; cursor: pointer; margin-right: 15px; transform: scale(1.2);
+}
+.episode-list label { cursor: pointer; color: #ccc; font-size: 14px; width: 100%; line-height: 1.4; font-weight: 500; }
+.episode-list label:hover { color: white; }
+.episode-list input:checked + label { color: #666; text-decoration: line-through; }
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background-color: #444; border-radius: 10px; }
+
+
+/* --- UI BOTÓN SIGUIENTE FANTASMA (Rectangular) --- */
+.next-episode-btn {
+    display: none;
+    position: absolute;
+    /* Subido a 120px para estar lejos de controles */
+    bottom: 120px;
+    right: 30px;
+    
+    /* Estilo "Fantasma" */
+    background-color: rgba(0, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    padding: 8px 25px; /* Aspecto rectangular */
+    border-radius: 6px; /* Bordes poco redondeados */
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 50;
+    backdrop-filter: blur(2px);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    opacity: 0.4;
+}
+
+.next-episode-btn:hover, .next-episode-btn:focus {
+    opacity: 1;
+    background-color: #e50914;
+    color: white;
+    border-color: #e50914;
+    transform: scale(1.05);
+    outline: none;
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+}
+
+/* Pantalla de Cuenta Regresiva */
+.countdown-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); z-index: 100;
+    display: none; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; backdrop-filter: blur(10px);
+}
+.countdown-content h3 { font-size: 20px; margin-bottom: 10px; color: #aaa; font-weight: normal; text-transform: uppercase; letter-spacing: 2px; }
+.countdown-content .episode-name { font-size: 32px; font-weight: bold; color: white; margin-bottom: 20px; text-shadow: 0 0 20px rgba(229, 9, 20, 0.8); }
+.countdown-timer { font-size: 100px; font-weight: 800; color: #e50914; margin: 10px 0; font-family: 'Arial', sans-serif; }
+
+.btn-cancel {
+    background-color: transparent; border: 2px solid #555; color: #aaa;
+    padding: 10px 30px; font-size: 14px; border-radius: 30px;
+    cursor: pointer; text-transform: uppercase; transition: all 0.3s; margin-top: 20px;
+}
+.btn-cancel:hover, .btn-cancel:focus { border-color: white; color: white; background-color: rgba(255,255,255,0.1); transform: scale(1.1); }
+.btn-play-now { display: none; }
+
+
+/* =========================================
+   MEDIA QUERIES (MÓVIL)
+   ========================================= */
+
+@media (max-width: 1024px) {
+    .movie-img { width: 150px; height: 225px; }
+    .sidebar { width: 300px; }
+}
+
+@media (max-width: 768px) {
+    .brand-logo { width: 250px; }
+    .login-container { width: 95%; padding: 20px; max-width: 320px; }
+    .login-body { align-items: flex-start; padding-top: 40px; }
+
+    .movie-img { width: 160px; height: 240px; } 
+    .movie-list { gap: 15px; padding-left: 15px; }
+    
+    .container { flex-direction: column; height: calc(100dvh - 60px); }
+    .sidebar { width: 100%; height: auto; flex-grow: 1; max-height: none; order: 2; border-right: none; border-top: 2px solid #e50914; overflow-y: auto; padding-bottom: 50px; }
+    .iframe-container { width: 100%; height: 35vh; min-height: 220px; order: 1; flex-shrink: 0; position: relative; }
+    
+    .top-bar h1 { font-size: 18px; margin-left: 10px; }
+    .back-arrow { padding: 6px 12px; font-size: 12px; }
+
+    /* Ajuste botón móvil (Fantasma) */
+    .next-episode-btn { bottom: 90px; right: 10px; font-size: 11px; padding: 6px 15px; }
+
+    .episode-list li { padding: 18px 12px; background-color: rgba(20,20,20,0.5); margin-bottom: 2px; }
+    .episode-list label { font-size: 16px; font-weight: 600; color: #ddd; }
+    .episode-list input[type="checkbox"] { transform: scale(1.6); margin-right: 20px; }
+}
+
+/* Optimización TV */
+body { cursor: default; }
+body:focus-within { cursor: none; }
+iframe:focus { outline: none; box-shadow: inset 0 0 0 4px #e50914; }
+#forgotBtn:focus { color: #fff !important; text-decoration: underline; outline: none; transform: scale(1.05); }
