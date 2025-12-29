@@ -44,7 +44,7 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
 }
 
 /* =========================================
-   3. PANTALLA DE LOGIN (COMPACTA)
+   3. PANTALLA DE LOGIN
    ========================================= */
 .login-body {
     display: flex; 
@@ -102,7 +102,6 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     align-items: center;
 }
 
-/* INPUTS */
 .login-container input {
     width: 100%;
     padding: 12px;
@@ -125,7 +124,6 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     letter-spacing: 2px;
 }
 
-/* BOTONES */
 .login-container button {
     width: 100%;
     padding: 12px;
@@ -181,9 +179,44 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
-/* Logout y resto */
-.logout-container { position: absolute; top: 10px; right: 20px; z-index: 2000; }
-.logout-container button { background: #e50914; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; }
+/* =========================================
+   BOTÓN SALIR (LOGOUT) - ESTILO FANTASMA
+   ========================================= */
+.logout-container { 
+    position: absolute; 
+    top: 25px; /* Un poco más abajo para respirar */
+    left: 25px; 
+    z-index: 2000; 
+}
+
+.logout-container button { 
+    /* Estilo Idéntico al de Siguiente */
+    background-color: rgba(0, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 0.5); /* Tenue */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    padding: 8px 25px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    backdrop-filter: blur(2px);
+    transition: all 0.3s ease;
+    opacity: 0.4;
+}
+
+.logout-container button:hover, .logout-container button:focus {
+    opacity: 1;
+    background-color: #e50914;
+    border-color: #e50914;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+    outline: none;
+}
+
 #content { display: none; width: 100%; height: 100%; border: none; position: fixed; top: 0; left: 0; background: black; }
 
 /* Resto Web Principal */
@@ -229,12 +262,12 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
 .back-arrow { position: fixed; top: 15px; left: 20px; background-color: rgba(20, 20, 20, 0.9); color: #e50914; border: 2px solid #e50914; font-size: 14px; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px; cursor: pointer; z-index: 5000; }
 .top-bar { background: #111; padding: 10px; text-align: center; border-bottom: 1px solid #333; display: flex; justify-content: center; align-items: center; min-height: 60px; }
 
-/* LAYOUT PC (Estilo App fijo) */
+/* LAYOUT PC */
 .container { display: flex; height: calc(100vh - 60px); width: 100%; overflow: hidden; }
 .iframe-container { flex-grow: 1; background: black; position: relative; height: 100%; }
 .iframe-container iframe { width: 100%; height: 100%; border: none; }
 
-/* ESTILOS SERIES: MODERNO Y PREMIUM */
+/* ESTILOS SERIES */
 .sidebar {
     width: 350px;
     background: linear-gradient(to right, #0f0f0f, #1a1a1a);
@@ -273,8 +306,64 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
 .sidebar::-webkit-scrollbar-thumb { background-color: #444; border-radius: 10px; }
 
 
+/* --- UI BOTÓN SIGUIENTE FANTASMA (Rectangular) --- */
+.next-episode-btn {
+    display: none;
+    position: absolute;
+    /* Subido a 120px para estar lejos de controles */
+    bottom: 120px;
+    right: 30px;
+    
+    /* Estilo "Fantasma" */
+    background-color: rgba(0, 0, 0, 0.3);
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    padding: 8px 25px; /* Aspecto rectangular */
+    border-radius: 6px; /* Bordes poco redondeados */
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 50;
+    backdrop-filter: blur(2px);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    opacity: 0.4;
+}
+
+.next-episode-btn:hover, .next-episode-btn:focus {
+    opacity: 1;
+    background-color: #e50914;
+    color: white;
+    border-color: #e50914;
+    transform: scale(1.05);
+    outline: none;
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+}
+
+/* Pantalla de Cuenta Regresiva */
+.countdown-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); z-index: 100;
+    display: none; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; backdrop-filter: blur(10px);
+}
+.countdown-content h3 { font-size: 20px; margin-bottom: 10px; color: #aaa; font-weight: normal; text-transform: uppercase; letter-spacing: 2px; }
+.countdown-content .episode-name { font-size: 32px; font-weight: bold; color: white; margin-bottom: 20px; text-shadow: 0 0 20px rgba(229, 9, 20, 0.8); }
+.countdown-timer { font-size: 100px; font-weight: 800; color: #e50914; margin: 10px 0; font-family: 'Arial', sans-serif; }
+
+.btn-cancel {
+    background-color: transparent; border: 2px solid #555; color: #aaa;
+    padding: 10px 30px; font-size: 14px; border-radius: 30px;
+    cursor: pointer; text-transform: uppercase; transition: all 0.3s; margin-top: 20px;
+}
+.btn-cancel:hover, .btn-cancel:focus { border-color: white; color: white; background-color: rgba(255,255,255,0.1); transform: scale(1.1); }
+.btn-play-now { display: none; }
+
+
 /* =========================================
-   MEDIA QUERIES (ADAPTACIÓN TABLET Y MÓVIL)
+   MEDIA QUERIES (MÓVIL)
    ========================================= */
 
 @media (max-width: 1024px) {
@@ -283,62 +372,26 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
 }
 
 @media (max-width: 768px) {
-    /* Login Ajustado para móvil */
     .brand-logo { width: 250px; }
     .login-container { width: 95%; padding: 20px; max-width: 320px; }
     .login-body { align-items: flex-start; padding-top: 40px; }
 
-    /* Carátulas grandes (Zoom para móvil) */
     .movie-img { width: 160px; height: 240px; } 
     .movie-list { gap: 15px; padding-left: 15px; }
     
-    /* === FIX SCROLL MÓVIL (Scroll Natural) === */
-    /* Dejamos de forzar la altura fija. El body hace scroll. */
-    
-    .container { 
-        flex-direction: column; 
-        height: auto; /* IMPORTANTE: Deja crecer la página */
-        display: flex;
-    }
-    
-    .iframe-container { 
-        width: 100%; 
-        height: 35vh; /* Video fijo arriba */
-        min-height: 220px;
-        order: 1; 
-        position: relative;
-    }
-    
-    .sidebar { 
-        width: 100%; 
-        height: auto; /* Crece con el contenido */
-        overflow: visible; /* Elimina scroll interno conflictivo */
-        max-height: none;
-        order: 2; 
-        border-right: none;
-        border-top: 2px solid #e50914;
-        box-shadow: none; /* Limpiamos sombras laterales */
-        padding-bottom: 50px; /* Espacio extra abajo */
-    }
-    
-    /* AJUSTES VISUALES PARA DEDO (TOUCH) */
-    .episode-list li {
-        padding: 18px 12px; /* Más área de toque */
-        background-color: rgba(20,20,20,0.5); /* Fondo ligero para separar */
-        margin-bottom: 2px;
-    }
-    .episode-list label {
-        font-size: 16px; /* Texto más grande */
-        font-weight: 600;
-        color: #ddd;
-    }
-    .episode-list input[type="checkbox"] {
-        transform: scale(1.6); /* Checkbox gigante */
-        margin-right: 20px;
-    }
+    .container { flex-direction: column; height: calc(100dvh - 60px); }
+    .sidebar { width: 100%; height: auto; flex-grow: 1; max-height: none; order: 2; border-right: none; border-top: 2px solid #e50914; overflow-y: auto; padding-bottom: 50px; }
+    .iframe-container { width: 100%; height: 35vh; min-height: 220px; order: 1; flex-shrink: 0; position: relative; }
     
     .top-bar h1 { font-size: 18px; margin-left: 10px; }
     .back-arrow { padding: 6px 12px; font-size: 12px; }
+
+    /* Ajuste botón móvil (Fantasma) */
+    .next-episode-btn { bottom: 90px; right: 10px; font-size: 11px; padding: 6px 15px; }
+
+    .episode-list li { padding: 18px 12px; background-color: rgba(20,20,20,0.5); margin-bottom: 2px; }
+    .episode-list label { font-size: 16px; font-weight: 600; color: #ddd; }
+    .episode-list input[type="checkbox"] { transform: scale(1.6); margin-right: 20px; }
 }
 
 /* Optimización TV */
