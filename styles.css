@@ -1,0 +1,297 @@
+/* =========================================
+   1. ESTILOS GLOBALES Y FUENTES
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/waltograph');
+
+* {
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #050505;
+    font-family: 'Arial', sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100vw;
+    min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* =========================================
+   2. FOCUS & NAVEGACIÓN TV
+   ========================================= */
+/* Foco general */
+input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
+    transform: scale(1.05);
+    outline: 3px solid #FFD700;
+    border-color: #FFD700 !important;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+    z-index: 1000;
+    transition: all 0.2s ease;
+}
+
+/* Foco específico para carátulas */
+.movie-img:focus {
+    outline: 4px solid #FFD700;
+    transform: scale(1.1);
+    z-index: 1000;
+}
+
+/* =========================================
+   3. PANTALLA DE LOGIN
+   ========================================= */
+.login-body {
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; width: 100vw;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+    font-family: 'Quicksand', sans-serif; padding: 10px;
+}
+.center-wrapper {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-height: 95vh;
+}
+.brand-logo { width: 350px; max-width: 80%; height: auto; filter: drop-shadow(0 0 20px rgba(255,255,255,0.15)); margin-bottom: 15px; }
+
+.login-container {
+    width: 100%; max-width: 380px; padding: 25px;
+    background: rgba(30, 30, 30, 0.65); backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column; align-items: center;
+}
+.login-container input {
+    width: 100%; padding: 12px; margin-bottom: 12px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px;
+    color: #ffffff; font-size: 15px; text-align: center; letter-spacing: 1px;
+}
+.login-container button {
+    width: 100%; padding: 12px; margin-top: 8px;
+    background-color: #ffffff; color: #000000; border: none; border-radius: 6px;
+    font-size: 15px; font-weight: 800; cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+.request-button {
+    width: 100%; padding: 10px; margin-top: 12px; 
+    background-color: transparent; color: rgba(255, 255, 255, 0.7); 
+    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px;
+    font-size: 12px; font-weight: 700; text-align: center; text-decoration: none; display: block;
+}
+.error-message { color: #ff4d4d; margin-top: 15px; font-weight: bold; font-size: 12px; text-align: center; }
+
+/* =========================================
+   BOTÓN SALIR (LOGOUT)
+   ========================================= */
+.logout-container { position: absolute; top: 30px; left: 30px; z-index: 2000; }
+.logout-container button { 
+    background-color: rgba(0, 0, 0, 0.3); color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 25px;
+    border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 1px; backdrop-filter: blur(2px);
+    transition: all 0.3s ease; opacity: 0.4;
+}
+.logout-container button:hover, .logout-container button:focus {
+    opacity: 1; background-color: #e50914; border-color: #e50914; color: white;
+    transform: scale(1.05); box-shadow: 0 0 15px rgba(229, 9, 20, 0.5); outline: none;
+}
+
+#content { display: none; width: 100%; height: 100%; border: none; position: fixed; top: 0; left: 0; background: black; }
+
+/* =========================================
+   WEB PRINCIPAL
+   ========================================= */
+h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-align: center; font-size: 3em; margin-top: 30px; margin-bottom: 20px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.6); font-weight: normal; }
+
+/* BUSCADOR (Rectangular y bajo) */
+.search-container { text-align: center; margin-bottom: 30px; }
+
+#search-input { 
+    width: 60%; 
+    max-width: 600px; 
+    padding: 8px 15px; /* Menos altura */
+    border-radius: 4px; /* Esquinas casi rectas */
+    border: 1px solid #444; 
+    background-color: rgba(20, 20, 20, 0.9); 
+    color: white; 
+    text-align: center; 
+    font-size: 16px; 
+    outline: none; 
+    transition: all 0.3s ease;
+}
+
+#search-input:focus {
+    border-color: #e50914 !important;
+    background-color: black;
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.3);
+    outline: none;
+}
+
+.section-title-img { width: 280px; height: auto; display: block; margin: 10px auto 20px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); }
+
+
+/* =========================================
+   MENÚ DE CATEGORÍAS (NORMALIZADO)
+   ========================================= */
+.category-menu {
+    display: flex;
+    justify-content: flex-start; /* Alineación natural a la izquierda */
+    align-items: center;
+    gap: 30px; /* Separación cómoda */
+    padding: 10px 5%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    margin-bottom: 20px;
+    width: 100%;
+    
+    /* Sin scrollbar fea */
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+}
+.category-menu::-webkit-scrollbar { display: none; }
+
+/* LOGO INDIVIDUAL (Opaco y pequeño por defecto) */
+.menu-item {
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    opacity: 0.3; 
+    transform: scale(0.85);
+    filter: grayscale(80%); 
+    
+    /* Sin bordes iniciales */
+    border: none;
+    outline: none;
+    
+    /* Padding para dar espacio a la luz de abajo */
+    padding: 10px 10px 15px 10px;
+    border-radius: 10px; /* Suaviza el contenedor invisible */
+}
+
+.menu-item img {
+    height: 60px; 
+    width: auto;
+    display: block;
+    pointer-events: none;
+}
+
+/* ESTADO ACTIVO (Solo luz abajo) */
+.menu-item.active, .menu-item:hover, .menu-item:focus {
+    opacity: 1; 
+    transform: scale(1.1); 
+    filter: grayscale(0%);
+    
+    /* CERO BORDES CUADRADOS */
+    outline: none !important;
+    border: none !important;
+    
+    /* EL TRUCO DE LA LUZ DE BASE */
+    /* Sombra que solo va hacia abajo (offset-y: 20px) con desenfoque alto */
+    box-shadow: 0 20px 20px -10px rgba(229, 9, 20, 0.6); 
+    
+    background: transparent; /* Asegurar que no hay fondo de caja */
+}
+
+
+/* SECCIONES ANIMADAS */
+.category-section { display: none; opacity: 0; transition: opacity 0.5s ease; }
+.category-section.active-section { display: block; opacity: 1; animation: fadeIn 0.5s forwards; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* CARRUSELES (Listas) */
+.movie-list, .marvel-movie-list, .dreamworks-movie-list, .series-list { 
+    display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 15px; padding: 20px 5%; 
+    list-style: none; margin: 0 0 40px 0; align-items: center; 
+    scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+}
+.movie-list li, .marvel-movie-list li, .dreamworks-movie-list li, .series-list li { scroll-snap-align: center; }
+
+.movie-img { 
+    width: 160px; height: 240px; object-fit: cover; border-radius: 8px; cursor: pointer; 
+    border: 3px solid transparent; flex-shrink: 0; transition: transform 0.3s ease, border-color 0.3s ease; 
+}
+.movie-img:hover { transform: scale(1.1); border-color: rgba(255, 255, 255, 0.9); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6); z-index: 10; }
+
+/* MODAL Y REPRODUCTOR */
+.modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: black; overflow: hidden; }
+.modal-content { width: 100%; height: 100%; border: none; margin: 0; padding: 0; background: black; }
+.modal-content iframe { width: 100%; height: 100%; border: none; }
+.close, .close-button { position: absolute; top: 5px; right: 5px; width: 60px; height: 60px; border-radius: 8px; display: flex; justify-content: center; align-items: center; background-color: rgba(0, 0, 0, 0.3); border: none; outline: none; padding: 0; color: rgba(255, 255, 255, 0.5); font-weight: bold; font-size: 40px; line-height: 1; cursor: pointer; z-index: 9999; }
+.close:hover, .close-button:hover { background-color: #e50914; color: white; transform: scale(1.1); }
+
+/* LAYOUT SERIES */
+.back-arrow { position: fixed; top: 15px; left: 20px; background-color: rgba(20, 20, 20, 0.9); color: #e50914; border: 2px solid #e50914; font-size: 14px; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px; cursor: pointer; z-index: 5000; }
+.top-bar { background: #111; padding: 10px; text-align: center; border-bottom: 1px solid #333; display: flex; justify-content: center; align-items: center; min-height: 60px; }
+.container { display: flex; height: calc(100vh - 60px); width: 100%; overflow: hidden; }
+.iframe-container { flex-grow: 1; background: black; position: relative; height: 100%; }
+.iframe-container iframe { width: 100%; height: 100%; border: none; }
+
+.sidebar { width: 350px; background: linear-gradient(to right, #0f0f0f, #1a1a1a); padding: 20px; overflow-y: auto; flex-shrink: 0; border-right: 1px solid #333; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
+.season-selector select { width: 100%; padding: 12px 15px; background-color: #333; color: white; border: 1px solid #444; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; }
+.episode-list { list-style: none; padding: 0; margin: 0; }
+.episode-list li { padding: 12px 10px; border-bottom: 1px solid #2a2a2a; display: flex; align-items: center; border-radius: 6px; }
+.episode-list li:hover { background-color: rgba(255, 255, 255, 0.1); border-left: 3px solid #FFD700; }
+.episode-list input[type="checkbox"] { accent-color: #e50914; width: 18px; height: 18px; margin-right: 15px; }
+.episode-list label { cursor: pointer; color: #ccc; font-size: 14px; width: 100%; font-weight: 500; }
+.episode-list input:checked + label { color: #666; text-decoration: line-through; }
+
+/* UI BOTÓN SIGUIENTE (FANTASMA DERECHA) */
+.next-episode-btn {
+    display: none; position: absolute; bottom: 120px; right: 30px;
+    background-color: rgba(0, 0, 0, 0.3); color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2); padding: 8px 25px; 
+    border-radius: 6px; font-weight: bold; cursor: pointer; z-index: 50;
+    backdrop-filter: blur(2px); transition: all 0.3s ease;
+    text-transform: uppercase; font-size: 13px; letter-spacing: 1px; opacity: 0.4;
+}
+.next-episode-btn:hover, .next-episode-btn:focus {
+    opacity: 1; background-color: #e50914; color: white; border-color: #e50914; transform: scale(1.05); outline: none; box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+}
+
+/* OVERLAY CUENTA REGRESIVA */
+.countdown-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); z-index: 100;
+    display: none; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; backdrop-filter: blur(10px);
+}
+.countdown-content h3 { font-size: 20px; color: #aaa; text-transform: uppercase; letter-spacing: 2px; }
+.countdown-content .episode-name { font-size: 32px; font-weight: bold; color: white; margin-bottom: 20px; text-shadow: 0 0 20px rgba(229, 9, 20, 0.8); }
+.countdown-timer { font-size: 100px; font-weight: 800; color: #e50914; margin: 10px 0; font-family: 'Arial', sans-serif; }
+.btn-cancel {
+    background-color: transparent; border: 2px solid #555; color: #aaa;
+    padding: 10px 30px; font-size: 14px; border-radius: 30px;
+    cursor: pointer; text-transform: uppercase; transition: all 0.3s; margin-top: 20px;
+}
+.btn-cancel:hover, .btn-cancel:focus { border-color: white; color: white; background-color: rgba(255,255,255,0.1); transform: scale(1.1); }
+.btn-play-now { display: none; }
+
+/* MEDIA QUERIES */
+@media (max-width: 1024px) {
+    .movie-img { width: 150px; height: 225px; }
+    .sidebar { width: 300px; }
+}
+@media (max-width: 768px) {
+    .brand-logo { width: 250px; }
+    .login-container { width: 95%; padding: 20px; max-width: 320px; }
+    .login-body { align-items: flex-start; padding-top: 40px; }
+    .movie-img { width: 160px; height: 240px; } 
+    .container { flex-direction: column; height: calc(100dvh - 60px); }
+    .sidebar { width: 100%; height: auto; flex-grow: 1; order: 2; border-right: none; border-top: 2px solid #e50914; }
+    .iframe-container { width: 100%; height: 35vh; min-height: 220px; order: 1; }
+    .next-episode-btn { bottom: 90px; right: 10px; font-size: 11px; padding: 6px 15px; }
+    .menu-item img { height: 40px; }
+    .category-menu { gap: 15px; }
+}
