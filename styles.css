@@ -19,9 +19,7 @@ body {
     padding: 0;
     overflow-x: hidden;
     width: 100vw;
-    /* Usamos min-height 100dvh para móviles modernos */
     min-height: 100vh;
-    min-height: 100dvh; 
 }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -52,7 +50,7 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     display: flex; 
     justify-content: center; 
     align-items: center;
-    min-height: 100dvh; /* Altura dinámica para móvil */
+    min-height: 100vh;
     width: 100vw;
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
     font-family: 'Quicksand', sans-serif;
@@ -65,9 +63,7 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     align-items: center; 
     justify-content: center; 
     width: 100%;
-    /* Asegura que no se corte en pantallas horizontales de celular */
     max-height: 95vh;
-    overflow-y: auto; 
 }
 
 .brand-logo-container {
@@ -106,6 +102,7 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     align-items: center;
 }
 
+/* INPUTS */
 .login-container input {
     width: 100%;
     padding: 12px;
@@ -114,7 +111,7 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 6px;
     color: #ffffff;
-    font-size: 16px; /* 16px evita zoom automático en iPhone */
+    font-size: 15px;
     font-weight: 500;
     text-align: center; 
     letter-spacing: 1px;
@@ -128,6 +125,7 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     letter-spacing: 2px;
 }
 
+/* BOTONES */
 .login-container button {
     width: 100%;
     padding: 12px;
@@ -183,6 +181,7 @@ input:focus, button:focus, a.request-button:focus, #forgotBtn:focus {
     text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
+/* Logout y resto */
 .logout-container { position: absolute; top: 10px; right: 20px; z-index: 2000; }
 .logout-container button { background: #e50914; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px; }
 #content { display: none; width: 100%; height: 100%; border: none; position: fixed; top: 0; left: 0; background: black; }
@@ -209,7 +208,7 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
 }
 .movie-list li, .marvel-movie-list li, .dreamworks-movie-list li, .series-list li { scroll-snap-align: center; }
 
-/* IMÁGENES BASE (PC/TV) */
+/* IMÁGENES BASE */
 .movie-img { 
     width: 160px; 
     height: 240px; 
@@ -230,20 +229,12 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
 .back-arrow { position: fixed; top: 15px; left: 20px; background-color: rgba(20, 20, 20, 0.9); color: #e50914; border: 2px solid #e50914; font-size: 14px; padding: 6px 14px; border-radius: 6px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 6px; cursor: pointer; z-index: 5000; }
 .top-bar { background: #111; padding: 10px; text-align: center; border-bottom: 1px solid #333; display: flex; justify-content: center; align-items: center; min-height: 60px; }
 
-/* LAYOUT SERIES BASE (PC) */
-.container { 
-    display: flex; 
-    /* Usamos dvh para evitar problemas en navegadores móviles modernos */
-    height: calc(100vh - 60px); 
-    width: 100%; 
-    overflow: hidden; 
-}
+/* LAYOUT PC (Estilo App fijo) */
+.container { display: flex; height: calc(100vh - 60px); width: 100%; overflow: hidden; }
 .iframe-container { flex-grow: 1; background: black; position: relative; height: 100%; }
 .iframe-container iframe { width: 100%; height: 100%; border: none; }
 
-/* =========================================
-   ESTILOS SERIES: MODERNO Y PREMIUM
-   ========================================= */
+/* ESTILOS SERIES: MODERNO Y PREMIUM */
 .sidebar {
     width: 350px;
     background: linear-gradient(to right, #0f0f0f, #1a1a1a);
@@ -252,7 +243,6 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
     flex-shrink: 0;
     border-right: 1px solid #333;
     box-shadow: 5px 0 15px rgba(0,0,0,0.5);
-    /* Bloquear scroll encadenado para que no mueva toda la página */
     overscroll-behavior: contain; 
 }
 
@@ -273,7 +263,6 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
 }
 .episode-list li:hover, .episode-list li:focus-within { background-color: rgba(255, 255, 255, 0.1); border-left: 3px solid #FFD700; }
 
-/* Checkbox Normal */
 .episode-list input[type="checkbox"] {
     accent-color: #e50914; width: 18px; height: 18px; cursor: pointer; margin-right: 15px; transform: scale(1.2);
 }
@@ -299,52 +288,57 @@ h2.main-greeting { font-family: 'Waltograph', sans-serif; color: white; text-ali
     .login-container { width: 95%; padding: 20px; max-width: 320px; }
     .login-body { align-items: flex-start; padding-top: 40px; }
 
-    /* Carátulas grandes */
+    /* Carátulas grandes (Zoom para móvil) */
     .movie-img { width: 160px; height: 240px; } 
     .movie-list { gap: 15px; padding-left: 15px; }
     
-    /* Layout Series Vertical (Fix Bug Scroll) */
+    /* === FIX SCROLL MÓVIL (Scroll Natural) === */
+    /* Dejamos de forzar la altura fija. El body hace scroll. */
+    
     .container { 
         flex-direction: column; 
-        /* 100dvh es clave para solucionar el bug de la barra de navegación */
-        height: calc(100dvh - 60px); 
-    }
-    
-    .sidebar { 
-        width: 100%; 
-        height: auto; 
-        flex-grow: 1; /* Ocupa el espacio restante */
-        max-height: none; /* Quitamos límite */
-        order: 2; 
-        border-right: none;
-        border-top: 2px solid #e50914;
-        /* Scroll suave */
-        overflow-y: auto;
+        height: auto; /* IMPORTANTE: Deja crecer la página */
+        display: flex;
     }
     
     .iframe-container { 
         width: 100%; 
-        height: 35vh; /* Video fijo más pequeño en vertical */
-        min-height: 250px;
+        height: 35vh; /* Video fijo arriba */
+        min-height: 220px;
         order: 1; 
-        flex-shrink: 0;
+        position: relative;
     }
     
-    .top-bar h1 { font-size: 18px; }
-    .back-arrow { padding: 4px 10px; font-size: 12px; }
-
-    /* MEJORA VISUAL LISTA (MODO DEDO GORDO) */
+    .sidebar { 
+        width: 100%; 
+        height: auto; /* Crece con el contenido */
+        overflow: visible; /* Elimina scroll interno conflictivo */
+        max-height: none;
+        order: 2; 
+        border-right: none;
+        border-top: 2px solid #e50914;
+        box-shadow: none; /* Limpiamos sombras laterales */
+        padding-bottom: 50px; /* Espacio extra abajo */
+    }
+    
+    /* AJUSTES VISUALES PARA DEDO (TOUCH) */
     .episode-list li {
-        padding: 18px 10px; /* Más espacio para tocar */
+        padding: 18px 12px; /* Más área de toque */
+        background-color: rgba(20,20,20,0.5); /* Fondo ligero para separar */
+        margin-bottom: 2px;
     }
     .episode-list label {
-        font-size: 16px; /* Letra más grande */
+        font-size: 16px; /* Texto más grande */
         font-weight: 600;
+        color: #ddd;
     }
     .episode-list input[type="checkbox"] {
-        transform: scale(1.5); /* Checkbox gigante */
+        transform: scale(1.6); /* Checkbox gigante */
         margin-right: 20px;
     }
+    
+    .top-bar h1 { font-size: 18px; margin-left: 10px; }
+    .back-arrow { padding: 6px 12px; font-size: 12px; }
 }
 
 /* Optimización TV */
