@@ -41,10 +41,6 @@
         </div>
     </div>
 
-    <div class="logout-container" id="logoutContainer" style="display: none;">
-        <button id="logoutButton" tabindex="0">Salir</button>
-    </div>
-
     <iframe id="content"></iframe>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -64,7 +60,6 @@
                 forgot: document.getElementById('forgotBtn')
             };
 
-            // ABAJO (40)
             if (e.keyCode === 40) { 
                 e.preventDefault();
                 if (active === els.user) els.pass.focus();
@@ -72,7 +67,6 @@
                 else if (active === els.login) els.req.focus();
                 else if (active === els.req) els.forgot.focus();
             }
-            // ARRIBA (38)
             else if (e.keyCode === 38) {
                 e.preventDefault();
                 if (active === els.forgot) els.req.focus();
@@ -80,13 +74,11 @@
                 else if (active === els.login) els.pass.focus();
                 else if (active === els.pass) els.user.focus();
             }
-            // ENTER (13) en botones
             else if (e.keyCode === 13 && (active === els.req || active === els.forgot)) {
                 active.click();
             }
         });
 
-        // Verificar sesión persistente (Firebase se encarga)
         if (typeof auth !== 'undefined') {
             auth.onAuthStateChanged((user) => {
                 if (user) {
@@ -98,7 +90,6 @@
             });
         }
 
-        // --- LÓGICA DE LOGIN CON ERRORES EN ESPAÑOL ---
         function login(e) {
             e.preventDefault();
             const email = document.getElementById('user').value.trim();
@@ -117,9 +108,7 @@
                     const code = error.code;
                     const msg = error.message || "";
 
-                    // TRADUCCIÓN DE ERRORES PARA EL USUARIO
                     if (msg.includes("INVALID_LOGIN_CREDENTIALS") || code === 'auth/invalid-login-credentials') {
-                        // Firebase agrupa errores por seguridad (si no desactivas la protección)
                         errorMsg.textContent = 'USUARIO O CONTRASEÑA INCORRECTA';
                     } else if (code === 'auth/user-not-found') {
                         errorMsg.textContent = 'USUARIO NO REGISTRADO';
@@ -133,7 +122,6 @@
                         errorMsg.textContent = 'ERROR DE CONEXIÓN';
                     }
 
-                    // Limpiar solo la contraseña y enfocar
                     document.getElementById('pass').value = ''; 
                     document.getElementById('pass').focus();
                 });
@@ -155,7 +143,7 @@
 
         function showContent() {
             document.querySelector('.center-wrapper').style.display = 'none';
-            document.getElementById('logoutContainer').style.display = 'block';
+            // Eliminamos la línea que mostraba el botón duplicado
             document.body.classList.remove('login-body');
             document.body.style.backgroundColor = 'black';
 
@@ -165,13 +153,7 @@
             contentFrame.onload = () => contentFrame.contentWindow.focus();
         }
 
-        function logout() {
-            auth.signOut().then(() => location.reload());
-        }
-
         document.getElementById('loginForm').addEventListener('submit', login);
-        document.getElementById('logoutButton').addEventListener('click', logout);
-        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
 </html>
