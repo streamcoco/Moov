@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Amsterdam</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="web.html" class="back-arrow" tabindex="0">&#8592; Volver</a>
+        <h1>New Amsterdam</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="season-selector">
+                <select id="seasonSelect" tabindex="0">
+                    <option value="1" selected>Season 1</option>
+                    <option value="2">Season 2</option>
+                </select>
+            </div>
+            <ul id="episodeList" class="episode-list"></ul>
+        </div>
+
+        <div class="iframe-container">
+            <button id="closeButton" class="close-button" style="display: none;" onclick="closeSeriesIframe()" tabindex="0">X</button>
+            <iframe id="VideoFrame" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script src="fire-setup.js"></script>
+    <script src="logic.js"></script>
+
+    <script>
+        window.CURRENT_SERIES_ID = 'NA_DATA';
+        const seriesData = {
+            1: [
+                { name: 'Capítulo 1: "Pilot"', link: 'https://drive.google.com/file/d/1wbE-7q1rzpctwFYRUHMk6CmYo33utiGp/preview' },
+                { name: 'Capítulo 2: "Rituals"', link: 'https://drive.google.com/file/d/1tXDQ5wDdnIc20HXYdAo488yb2rDiNJRL/preview' },
+                { name: 'Capítulo 3: "Every Last Minute"', link: 'https://drive.google.com/file/d/1Q1LLauBe67grRDYDIIoqQL46I4u0khs2/preview' },
+                { name: 'Capítulo 4: "Boundaries"', link: 'https://drive.google.com/file/d/1NZHHgVsIPd0QtoFMEvONpJGuz_oToPPx/preview' },
+                { name: 'Capítulo 5: "Cavitation"', link: 'https://drive.google.com/file/d/16W1XnzMrzCgcG9ITDoJKDHqO9n5AH6KQ/preview' },
+                { name: 'Capítulo 6: "Anthropocene"', link: 'https://drive.google.com/file/d/1Pbyj4hTaOzPqmBRTJ73SJdRzoiLSM4ie/preview' },
+                { name: 'Capítulo 7: "Domino Effect"', link: 'https://drive.google.com/file/d/1q3Mgn5TBWX_W7AWwhut1K6fKr5D5T10H/preview' },
+                { name: 'Capítulo 8: "Three Dots"', link: 'https://drive.google.com/file/d/1unUeKSe6B5fLLwjg-Ku0nLGR_IayzBYd/preview' },
+                { name: 'Capítulo 9: "As Long as It Takes"', link: 'https://drive.google.com/file/d/1v6HuddslBKVSlHsS6Wy3_Q4atsgYWRxI/preview' },
+                { name: 'Capítulo 10: "Six or Seven Minutes"', link: 'https://drive.google.com/file/d/1dCY_4RMnkVJW9NdqpwujvSXwMMtCjnLr/preview' },
+                { name: 'Capítulo 11: "A Seat at the Table"', link: 'https://drive.google.com/file/d/1R0umcmXG2uVXmjcRRPSG2ZDBYwb3pnHa/preview' },
+                { name: 'Capítulo 12: "Anima Sola"', link: 'https://drive.google.com/file/d/1QwcAw1G1sahSN6Zp_A6JRopH0OQAk6DP/preview' },
+                { name: 'Capítulo 13: "The Blues"', link: '' },
+                { name: 'Capítulo 14: "The Forsaken"', link: '' },
+                { name: 'Capítulo 15: "Croaklahoma"', link: '' },
+                { name: 'Capítulo 16: "King of Swords"', link: '' },
+                { name: 'Capítulo 17: "Sanctuary"', link: '' },
+                { name: 'Capítulo 18: "Five Miles West"', link: '' },
+                { name: 'Capítulo 19: "Happy Place"', link: '' },
+                { name: 'Capítulo 20: "Preventable"', link: '' },
+                { name: 'Capítulo 21: "This Is Not the End"', link: '' },
+                { name: 'Capítulo 22: "Luna"', link: '' }
+            ]
+        };
+        document.addEventListener('DOMContentLoaded', () => initSeriesPlayer(seriesData));
+    </script>
+</body>
+</html>

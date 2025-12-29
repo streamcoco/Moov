@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Practice</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="web.html" class="back-arrow" tabindex="0">&#8592; Volver</a>
+        <h1>Private Practice</h1>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="season-selector">
+                <select id="seasonSelect" tabindex="0">
+                    <option value="1" selected>Season 1</option>
+                </select>
+            </div>
+            <ul id="episodeList" class="episode-list"></ul>
+        </div>
+
+        <div class="iframe-container">
+            <button id="closeButton" class="close-button" style="display: none;" onclick="closeSeriesIframe()" tabindex="0">&times;</button>
+            <iframe id="VideoFrame" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script src="fire-setup.js"></script>
+    <script src="logic.js"></script>
+
+    <script>
+        window.CURRENT_SERIES_ID = 'PP_DATA';
+        const seriesData = {
+            1: [
+                { name: 'Capítulo 1: "In Which We Meet Addison..."', link: 'https://drive.google.com/file/d/1y7Kyh2IBQ7rZuQ5vNk7-QqaRoBzfYtvr/preview' },
+                { name: 'Capítulo 2: "In Which Sam Receives an Unexpected Visitor"', link: 'https://drive.google.com/file/d/1jRCvXoYxwwSz1IgsBxZ-T2BXsipOGdfv/preview' },
+                { name: 'Capítulo 3: "In Which Addison Finds the Magic"', link: 'https://drive.google.com/file/d/1N4WU4NqUfZ3TiEBULuga_iLRHfQRWY44/preview' },
+                { name: 'Capítulo 4: "In Which Addison Has a Very Casual Get Together"', link: 'https://drive.google.com/file/d/1tYeRrO_4XZQSN3-MtOAv1A4lMn7ZxSZx/preview' },
+                { name: 'Capítulo 5: "In Which Addison Finds a Showerhead"', link: 'https://drive.google.com/file/d/1up-M6Mu9xKzLjTKgRct4IDEnFgbwR_RE/preview' },
+                { name: 'Capítulo 6: "In Which Charlotte Goes Down the Rabbit Hole"', link: 'https://drive.google.com/file/d/1PdaRm_ZjbYBZ4iASm11lIvcjKkZhdoBj/preview' },
+                { name: 'Capítulo 7: "In Which Sam Gets Taken For a Ride"', link: 'https://drive.google.com/file/d/1p4b9COOXyJ4jRykyZ3wq0Dbg7EDTs2pU/preview' },
+                { name: 'Capítulo 8: "In Which Cooper Finds a Port In His Storm"', link: 'https://drive.google.com/file/d/1aVk0MJd66XYI6cVSI8bn44osEjcaMO_4/preview' },
+                { name: 'Capítulo 9: "In Which Dell Finds His Fight"', link: 'https://drive.google.com/file/d/1R0WsQZ_zw5E3cenPF1PTJdvaFWJzH26Z/preview' }
+            ]
+        };
+        document.addEventListener('DOMContentLoaded', () => initSeriesPlayer(seriesData));
+    </script>
+</body>
+</html>
