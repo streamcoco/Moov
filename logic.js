@@ -387,9 +387,53 @@ function closeVideoModal() {
     if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
     if(m) { f.src = ""; m.style.display = "none"; }
 }
+/* =========================================
+   LOGIC.JS - BÚSQUEDA GLOBAL
+   ========================================= */
+
+// ... (MANTÉN TODO EL CÓDIGO ANTERIOR IGUAL HASTA LLEGAR A filterMovies AL FINAL) ...
+
 function filterMovies() {
-    const q = document.getElementById('search-input').value.toLowerCase();
-    document.querySelectorAll('.movie-img').forEach(img => {
-        img.closest('li').style.display = img.alt.toLowerCase().includes(q) ? 'block' : 'none';
-    });
+    const query = document.getElementById('search-input').value.toLowerCase().trim();
+    
+    // Seleccionamos TODAS las secciones y TODOS los items (li) de todas las listas
+    const sections = document.querySelectorAll('.category-section');
+    const allItems = document.querySelectorAll('.movie-list li, .marvel-movie-list li, .dreamworks-movie-list li, .series-list li');
+
+    if (query.length > 0) {
+        // --- MODO BÚSQUEDA ACTIVADO ---
+
+        // 1. Forzar que TODAS las secciones sean visibles para buscar dentro de ellas
+        sections.forEach(sec => {
+            sec.style.display = 'block'; 
+            sec.style.opacity = '1';
+            sec.style.animation = 'none'; // Desactivar animación de entrada para que sea rápido
+        });
+
+        // 2. Recorrer cada película/serie y mostrar/ocultar según coincidencia
+        allItems.forEach(li => {
+            const img = li.querySelector('img');
+            if (img && img.alt.toLowerCase().includes(query)) {
+                li.style.display = 'block'; // Coincide: Mostrar
+            } else {
+                li.style.display = 'none';  // No coincide: Ocultar
+            }
+        });
+
+    } else {
+        // --- MODO NORMAL (RESTAURAR TABS) ---
+        
+        // 1. Limpiar los estilos forzados en las secciones
+        // Al poner '' (vacío), el navegador vuelve a obedecer al CSS (clases active-section)
+        sections.forEach(sec => {
+            sec.style.display = ''; 
+            sec.style.opacity = '';
+            sec.style.animation = '';
+        });
+
+        // 2. Restaurar visibilidad de todos los items (para cuando entres a su pestaña)
+        allItems.forEach(li => {
+            li.style.display = 'block';
+        });
+    }
 }
