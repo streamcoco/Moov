@@ -1,18 +1,17 @@
 /* =========================================
-   LOGIC.JS - MOOV (Firebase Sync + TV Nav)
+   LOGIC.JS - MOOV (Sincronización Real + TV)
    ========================================= */
 
 // --- 1. INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Si estamos en web.html
+    // Si estamos en web.html (Buscador)
     const searchInput = document.getElementById('search-input');
     if (searchInput) searchInput.focus();
 
-    // Si estamos en una serie (GAeng.html, etc)
+    // Si estamos en una serie (Botón volver o Selector)
     const backBtn = document.querySelector('.back-arrow');
     const seasonSelect = document.getElementById('seasonSelect');
     
-    // Enfocar elementos clave al entrar
     if (backBtn) {
         backBtn.focus();
     } else if (seasonSelect) {
@@ -25,12 +24,12 @@ document.addEventListener('keydown', (e) => {
     const KEY = { UP: 38, DOWN: 40, LEFT: 37, RIGHT: 39, ENTER: 13, BACK: 461, ESC: 27 };
     const active = document.activeElement;
     
-    // Si hay un modal de video activo, ignorar navegación (dejar al browser)
+    // Detectar si hay video reproduciéndose
     const modal = document.getElementById("myModal");
     const videoFrame = document.getElementById("VideoFrame");
     const isVideoPlaying = (modal && modal.style.display === "block") || (videoFrame && videoFrame.getAttribute('src') !== "");
 
-    // Salir del video con ESC o BACK
+    // Salir del video
     if (e.keyCode === KEY.ESC || e.keyCode === KEY.BACK) {
         e.preventDefault();
         closeVideoModal();
@@ -38,24 +37,24 @@ document.addEventListener('keydown', (e) => {
         return;
     }
 
-    if (isVideoPlaying) return;
+    if (isVideoPlaying) return; // Si hay video, no mover foco
 
-    // Navegación TV (Spatial)
+    // Navegación TV
     const isNavKey = [KEY.UP, KEY.DOWN, KEY.LEFT, KEY.RIGHT].includes(e.keyCode);
     if (isNavKey) {
         e.preventDefault(); 
         if (e.keyCode === KEY.DOWN) moveFocus(1);
         if (e.keyCode === KEY.UP) moveFocus(-1);
-        if (e.keyCode === KEY.RIGHT && active.tagName === 'INPUT') active.click(); // Check con flecha
+        // Flecha derecha marca el checkbox si estamos en él
+        if (e.keyCode === KEY.RIGHT && active.tagName === 'INPUT') active.click(); 
     } else if (e.keyCode === KEY.ENTER) {
         if(active.tagName !== 'A') active.click();
     }
 });
 
-// Función auxiliar para mover foco verticalmente
 function moveFocus(direction) {
     const focusable = Array.from(document.querySelectorAll('a, button, input, select, [tabindex="0"]'))
-                           .filter(el => el.offsetParent !== null); // Solo visibles
+                           .filter(el => el.offsetParent !== null); // Solo elementos visibles
     const index = focusable.indexOf(document.activeElement);
     let nextIndex = index + direction;
     
@@ -66,7 +65,7 @@ function moveFocus(direction) {
 }
 
 
-// --- 3. LOGICA DE SERIES CON FIREBASE (Híbrida) ---
+// --- 3. LÓGICA DE SERIES (SINCRONIZACIÓN EN TIEMPO REAL) ---
 
 function initSeriesPlayer(seriesData) {
     const seasonSelect = document.getElementById('seasonSelect');
@@ -75,29 +74,22 @@ function initSeriesPlayer(seriesData) {
     // Cargar temporada inicial
     loadSeason(seasonSelect.value, seriesData);
     
-    // Escuchar cambios de temporada
+    // Al cambiar de temporada en el selector
     seasonSelect.addEventListener('change', (e) => loadSeason(e.target.value, seriesData));
 }
 
 function loadSeason(seasonNum, data) {
     const list = document.getElementById('episodeList');
-    list.innerHTML = ''; // Limpiar lista
+    list.innerHTML = ''; // Limpiar lista visual
     const episodes = data[seasonNum];
     if (!episodes) return;
 
-    // ID de la serie (definido en HTML)
     const seriesID = window.CURRENT_SERIES_ID || 'UNKNOWN_SERIES';
-    
-    // Verificar usuario de Firebase
-    const user = (typeof firebase !== 'undefined' && firebase.auth().currentUser) ? firebase.auth().currentUser : null;
 
     episodes.forEach((ep, index) => {
         const li = document.createElement('li');
+        const localId = `${seriesID}-S${seasonNum}-E${index+1}`; // ID para LocalStorage
         
-        // ID Único para LocalStorage (Respaldo)
-        const localId = `${seriesID}-S${seasonNum}-E${index+1}`;
-        
-        // Estructura HTML
         li.innerHTML = `
             <input type="checkbox" id="check-${index}" tabindex="-1"> 
             <label tabindex="0" data-link="${ep.link}">
@@ -109,36 +101,41 @@ function loadSeason(seasonNum, data) {
         const checkbox = li.querySelector('input');
         const label = li.querySelector('label');
 
-        // --- SINCRONIZACIÓN ---
+        // --- EL CEREBRO DE LA SINCRONIZACIÓN ---
+        // Usamos 'onAuthStateChanged' para esperar a que Firebase cargue el usuario
+        // sin importar cuánto tarde el internet.
         
-        if (user) {
-            // A) MODO NUBE (Firebase)
-            const dbPath = `users/${user.uid}/series_progress/${seriesID}/S${seasonNum}/E${index+1}`;
-            
-            // Leer estado inicial
-            firebase.database().ref(dbPath).once('value').then(snapshot => {
-                if (snapshot.exists()) {
-                    checkbox.checked = snapshot.val();
-                    if(checkbox.checked) label.style.textDecoration = "line-through";
+        if (typeof firebase !== 'undefined') {
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    // === MODO NUBE (Usuario Conectado) ===
+                    // console.log("Usuario detectado, usando Nube para:", seriesID);
+                    
+                    const dbPath = `users/${user.uid}/series_progress/${seriesID}/S${seasonNum}/E${index+1}`;
+
+                    // 1. ESCUCHAR CAMBIOS (Lectura en tiempo real)
+                    // Si marcas en el celular, se marca solo en la TV al instante
+                    firebase.database().ref(dbPath).on('value', (snapshot) => {
+                        const val = snapshot.val();
+                        if (val !== null) { // Si hay dato en nube
+                            checkbox.checked = val;
+                            updateStyle(checkbox, label);
+                        }
+                    });
+
+                    // 2. GUARDAR CAMBIOS (Escritura)
+                    checkbox.onclick = function() {
+                        firebase.database().ref(dbPath).set(this.checked);
+                    };
+
+                } else {
+                    // === MODO LOCAL (Sin usuario / Falló Internet) ===
+                    useLocalStorage(checkbox, label, localId);
                 }
             });
-
-            // Guardar al cambiar
-            checkbox.addEventListener('change', () => {
-                firebase.database().ref(dbPath).set(checkbox.checked);
-                label.style.textDecoration = checkbox.checked ? "line-through" : "none";
-            });
-
         } else {
-            // B) MODO LOCAL (LocalStorage)
-            const isChecked = localStorage.getItem(localId) === 'true';
-            checkbox.checked = isChecked;
-            if(isChecked) label.style.textDecoration = "line-through";
-
-            checkbox.addEventListener('change', function() {
-                localStorage.setItem(localId, this.checked);
-                label.style.textDecoration = this.checked ? "line-through" : "none";
-            });
+            // Si Firebase no cargó por alguna razón, usar local
+            useLocalStorage(checkbox, label, localId);
         }
 
         // --- REPRODUCCIÓN ---
@@ -152,8 +149,13 @@ function loadSeason(seasonNum, data) {
                 closeBtn.style.display = 'flex';
                 iframe.focus();
                 
-                // Marcar visto al reproducir
-                if(!checkbox.checked) checkbox.click(); 
+                // Marcar visto automáticamente al dar Play
+                if (!checkbox.checked) {
+                    checkbox.checked = true;
+                    // Disparar evento para que se guarde (Nube o Local)
+                    if(checkbox.onclick) checkbox.onclick();
+                    updateStyle(checkbox, label);
+                }
                 
                 if (container.requestFullscreen) container.requestFullscreen();
                 else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
@@ -165,16 +167,37 @@ function loadSeason(seasonNum, data) {
         label.addEventListener('click', playEpisode);
         label.addEventListener('keydown', (e) => { if (e.key === 'Enter') playEpisode(); });
         
-        // Marcar con Barra Espaciadora
+        // Tecla Espacio para marcar/desmarcar manual
         label.addEventListener('keydown', (e) => { 
             if (e.key === ' ') { 
                 e.preventDefault();
-                checkbox.click();
+                checkbox.click(); // Esto disparará el onclick definido arriba
             }
         });
     });
 }
 
+// Función auxiliar para Modo Local
+function useLocalStorage(checkbox, label, localId) {
+    // Cargar
+    const isChecked = localStorage.getItem(localId) === 'true';
+    checkbox.checked = isChecked;
+    updateStyle(checkbox, label);
+
+    // Guardar
+    checkbox.onclick = function() {
+        localStorage.setItem(localId, this.checked);
+        updateStyle(checkbox, label);
+    };
+}
+
+// Actualizar estilo visual (tachado)
+function updateStyle(checkbox, label) {
+    label.style.textDecoration = checkbox.checked ? "line-through" : "none";
+    label.style.opacity = checkbox.checked ? "0.6" : "1";
+}
+
+// Cerrar reproductor
 function closeSeriesIframe() {
     const iframe = document.getElementById('VideoFrame');
     const closeBtn = document.getElementById('closeButton');
@@ -189,7 +212,7 @@ function closeSeriesIframe() {
 // Bloqueo clic derecho
 document.addEventListener('contextmenu', event => event.preventDefault());
 
-// Funciones heredadas para la web principal (web.html)
+// --- FUNCIONES HEREDADAS PARA WEB PRINCIPAL (Películas) ---
 function openVideoModal(url) {
     const modal = document.getElementById("myModal");
     const iframe = document.getElementById("videoFrame");
