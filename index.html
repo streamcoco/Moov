@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moov</title>
+    <link rel="icon" type="image/ico" href="Portadas/iconnn.ico">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="login-body">
+
+    <div class="center-wrapper">
+        <div class="brand-logo-container">
+            <img src="Portadas/login.png" alt="MOOV" class="brand-logo">
+        </div>
+
+        <div class="login-container" id="loginContainer">
+            <div class="login-form-content">
+                <form id="loginForm">
+                    <input type="email" id="user" name="user" placeholder="CORREO ELECTRÓNICO" required tabindex="1" autocomplete="email">
+                    
+                    <input type="password" id="pass" name="pass" placeholder="CONTRASEÑA" required tabindex="2">
+                    
+                    <button type="submit" id="loginBtn" tabindex="3">ENTRAR</button>
+                    
+                    <a href="#" 
+                       onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=M00v.5tr34m@gmail.com&su=Solicitud%20de%20Cuenta%20MOOV&body=Hola', 'GmailPopup', 'width=600,height=600'); return false;"
+                       id="requestBtn" 
+                       class="request-button" 
+                       tabindex="4">
+                       SOLICITAR CUENTA
+                    </a>
+
+                    <button type="button" id="forgotBtn" onclick="resetPassword()" style="background:none; border:none; color:#888; font-size:12px; margin-top:15px; cursor:pointer; text-transform:uppercase; letter-spacing:1px;" tabindex="5">
+                        ¿Olvidaste tu contraseña?
+                    </button>
+
+                    <p id="error-message" class="error-message"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <iframe id="content"></iframe>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    
+    <script src="fire-setup.js"></script>
+
+    <script>
+        // Navegación con Flechas (Control Remoto)
+        document.addEventListener('keydown', function(e) {
+            const active = document.activeElement;
+            const els = {
+                user: document.getElementById('user'),
+                pass: document.getElementById('pass'),
+                login: document.getElementById('loginBtn'),
+                req: document.getElementById('requestBtn'),
+                forgot: document.getElementById('forgotBtn')
+            };
+
+            if (e.keyCode === 40) { 
+                e.preventDefault();
+                if (active === els.user) els.pass.focus();
+                else if (active === els.pass) els.login.focus();
+                else if (active === els.login) els.req.focus();
+                else if (active === els.req) els.forgot.focus();
+            }
+            else if (e.keyCode === 38) {
+                e.preventDefault();
+                if (active === els.forgot) els.req.focus();
+                else if (active === els.req) els.login.focus();
+                else if (active === els.login) els.pass.focus();
+                else if (active === els.pass) els.user.focus();
+            }
+            else if (e.keyCode === 13 && (active === els.req || active === els.forgot)) {
+                active.click();
+            }
+        });
+
+        if (typeof auth !== 'undefined') {
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    localStorage.setItem('currentUser', user.email);
+                    showContent();
+                } else {
+                    setTimeout(() => document.getElementById('user').focus(), 500);
+                }
+            });
+        }
+
+        function login(e) {
+            e.preventDefault();
+            const email = document.getElementById('user').value.trim();
+            const pass = document.getElementById('pass').value;
+            const errorMsg = document.getElementById('error-message');
+            const loginBtn = document.getElementById('loginBtn');
+
+            loginBtn.textContent = "VERIFICANDO...";
+            errorMsg.textContent = "";
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .catch((error) => {
+                    console.error("Detalle del error:", error);
+                    loginBtn.textContent = "ENTRAR";
+                    
+                    const code = error.code;
+                    const msg = error.message || "";
+
+                    if (msg.includes("INVALID_LOGIN_CREDENTIALS") || code === 'auth/invalid-login-credentials') {
+                        errorMsg.textContent = 'USUARIO O CONTRASEÑA INCORRECTA';
+                    } else if (code === 'auth/user-not-found') {
+                        errorMsg.textContent = 'USUARIO NO REGISTRADO';
+                    } else if (code === 'auth/wrong-password') {
+                        errorMsg.textContent = 'CONTRASEÑA INCORRECTA';
+                    } else if (code === 'auth/invalid-email') {
+                        errorMsg.textContent = 'FORMATO DE CORREO INVÁLIDO';
+                    } else if (code === 'auth/too-many-requests') {
+                        errorMsg.textContent = 'DEMASIADOS INTENTOS. ESPERA UN MOMENTO';
+                    } else {
+                        errorMsg.textContent = 'ERROR DE CONEXIÓN';
+                    }
+
+                    document.getElementById('pass').value = ''; 
+                    document.getElementById('pass').focus();
+                });
+        }
+
+        function resetPassword() {
+            const email = document.getElementById('user').value.trim();
+            if(!email) {
+                alert("Escribe tu correo en la casilla de arriba para enviarte el enlace.");
+                document.getElementById('user').focus();
+                return;
+            }
+            if(confirm("¿Enviar correo de recuperación a " + email + "?")) {
+                auth.sendPasswordResetEmail(email)
+                    .then(() => alert("Correo enviado. Revisa tu bandeja."))
+                    .catch(e => alert("Error: " + e.message));
+            }
+        }
+
+        function showContent() {
+            document.querySelector('.center-wrapper').style.display = 'none';
+            // Eliminamos la línea que mostraba el botón duplicado
+            document.body.classList.remove('login-body');
+            document.body.style.backgroundColor = 'black';
+
+            const contentFrame = document.getElementById('content');
+            contentFrame.src = 'web.html'; 
+            contentFrame.style.display = 'block';
+            contentFrame.onload = () => contentFrame.contentWindow.focus();
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', login);
+    </script>
+</body>
+</html>
